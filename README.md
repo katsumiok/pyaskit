@@ -13,7 +13,7 @@ Using *AskIt*, you can deploy LLMs for a multitude of tasks, such as:
 - Problem Solving: resolving mathematical problems.
 - Code Generation: creating new codes, and more.
 
-*AskIt* operates through the [OpenAI API](https://beta.openai.com/) for backend LLM functions. Besides Python, *AskIt* has also been implemented in TypeScript. You can access the TypeScript version, `ts-askit`, [here].
+*AskIt* operates through the [OpenAI API](https://beta.openai.com/) for backend LLM functions. Besides Python, *AskIt* has also been implemented in TypeScript. You can access the TypeScript version, [ts-askit](https://katsumiok.github.io/ts-askit/).
 
 ## Key Features
 
