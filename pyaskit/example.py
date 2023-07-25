@@ -7,7 +7,7 @@ ExampleType = List[Dict[str, Union[Dict[str, Any], Any]]]
 
 def _check_input(variables, input):
     if not isinstance(input, dict):
-        raise ValueError("Input must be a dictionary")
+        raise ValueError(f"Input must be a dictionary: {input}")
     for variable in variables:
         if variable not in input:
             raise ValueError(f"Input must contain '{variable}' field")
