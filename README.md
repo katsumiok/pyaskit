@@ -106,7 +106,7 @@ In this scenario, you only need to call `compile()` on the function returned by 
 ### Function Definition Using Examples
 Language Learning Models (LLMs) offer the advantage of few-shot learning, a capability that *AskIt* utilizes in programming tasks. *AskIt* enables you to solve tasks using the Programming by Example (PBE) technique, where you provide examples of the desired input and output.
 
-Let's consider creating a function to add two binary numbers. This function accepts two binary numbers and returns their sum, also in binary form. The following code demonstrates defining such a function using illustrative examples.
+Let's consider creating a function to add two binary numbers (represented as strings). This function accepts two binary numbers and returns their sum, also in binary form. The following code demonstrates defining such a function using illustrative examples.
 
 ```python
 from pyaskit import define
