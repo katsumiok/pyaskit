@@ -15,14 +15,14 @@ def extract_json(text: str):
     json_regex = r"```json(.*)```"
     json_match = re.search(json_regex, text, re.DOTALL)
     if json_match:
-        json_text = json_match.group(1)
+        json_text = json_match.group(1).strip()
     try:
         return json.loads(json_text)
-    except:
-        return None
+    except Exception as e:
+        raise ValueError(f"Failed to parse JSON: {e}")
 
 
-def chat_with_retry(model, messages, max_retries=5):
+def chat_with_retry(model, messages, max_retries=10):
     base_wait_time = 1  # wait time in seconds
     for i in range(max_retries):
         try:
@@ -40,6 +40,7 @@ def chat_with_retry(model, messages, max_retries=5):
         ):
             # https://platform.openai.com/docs/guides/error-codes/python-library-error-types
             wait_time = base_wait_time * 2**i
+            wait_time = min(wait_time, 30)
             jitter = wait_time / 2
             time.sleep(wait_time + random.uniform(-jitter, jitter))
     raise Exception(f"Failed to get response after {max_retries} attempts")
@@ -56,7 +57,7 @@ def make_qa(task, example):
 def make_answer(output):
     return f"""```json
 {{
-    "reason": "..."
+    "reason": "...",
     "answer": {json.dumps(output)}
 }}
 ```"""
@@ -94,10 +95,13 @@ def parse(text: str, return_type):
 
 def chat(task: str, var_map: dict, return_type, training_examples: ExampleType):
     messages = make_messages(task, return_type, var_map, training_examples)
+    
+    retry = False
 
     while True:
         completion = chat_with_retry(
             "gpt-3.5-turbo-16k",
+#            "gpt-4",
             messages,
         )
         content = completion.choices[0].message.content
@@ -105,12 +109,16 @@ def chat(task: str, var_map: dict, return_type, training_examples: ExampleType):
             data = parse(content, return_type)
             return data
         except ValueError as e:
-            messages.append({"role": "assistant", "content": content})
-            messages.append({"role": "user", "content": str(e)})
-            # print(str(e))
-            # print(content)
-            # print(content)
-            # print('retrying...')
+            if retry:
+                messages = messages[:-2]
+                retry = False
+            else:
+                messages.append({"role": "assistant", "content": content})
+                messages.append({"role": "user", "content": str(e)})
+                retry = True
+            #print(str(e))
+            #print(content)
+            #print('retrying...')
             pass
 
 
