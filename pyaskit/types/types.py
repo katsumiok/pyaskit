@@ -26,6 +26,9 @@ class TypeVisitor:
     def visit_union(self, type):
         raise NotImplementedError("visit_union method not implemented")
 
+    def visit_tuple(self, type):
+        raise NotImplementedError("visit_tuple method not implemented")
+
 
 class Type:
     # override | operator
@@ -142,8 +145,27 @@ def list(type):
     return ListType(type)
 
 
+class TupleType(Type):
+    def __init__(self, types):
+        self.types = types
+
+    def validate(self, value):
+        return (
+            isinstance(value, builtins.list)
+            and len(value) == len(self.types)
+            and all(type.validate(item) for item, type in zip(value, self.types))
+        )
+
+    def accept(self, visitor):
+        return visitor.visit_tuple(self)
+
+
+def tuple(*types):
+    return TupleType(types)
+
+
 class UnionType(Type):
-    def __init__(self, *types) -> None:
+    def __init__(self, types) -> None:
         if not all(isinstance(type, Type) for type in types):
             raise TypeError("All arguments must be of type Type")
         self.types = types
@@ -153,3 +175,7 @@ class UnionType(Type):
 
     def accept(self, visitor):
         return visitor.visit_union(self)
+
+
+def union(*types):
+    return UnionType(types)

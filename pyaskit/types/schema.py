@@ -23,4 +23,8 @@ def generate_schema(type) -> str:
     elif isinstance(type, t.ListType):
         typeString = generate_schema(type.type)
         return f"Array({typeString})"
+    elif isinstance(type, t.TupleType):
+        types = [generate_schema(type) for type in type.types]
+        return f'[{", ".join(types)}]'
+
     raise TypeError(f"Unknown type: {type}")
