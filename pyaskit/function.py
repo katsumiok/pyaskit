@@ -29,7 +29,7 @@ class Function:
         self.variables = extract_variables(self.template)
         check_examples(return_type, self.variables, training_examples)
         self.training_examples = training_examples
-        self.reason = ""
+        self._reason = ""
 
     def __call__(self, *args, **kwargs):
         converted_template = convert_template(self.template)
@@ -42,12 +42,12 @@ class Function:
             self.return_type,
             self.training_examples,
         )
-        self.reason = reason
+        self._reason = reason
         return result
     
     @property
     def reason(self):
-        return ""
+        return self._reason
 
     def check_args(self, args, kwargs, variables, variableMap):
         for var, arg in zip(variables, args):
