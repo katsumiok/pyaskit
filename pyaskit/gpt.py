@@ -95,13 +95,21 @@ def parse(text: str, return_type):
 
 def chat(task: str, var_map: dict, return_type, training_examples: ExampleType):
     messages = make_messages(task, return_type, var_map, training_examples)
-    
+    return ask_and_parse(return_type, messages)
+
+
+def chat_raw(return_type, messages):
+    merged_messages = merge_messages(messages, return_type)
+    return ask_and_parse(return_type, merged_messages)
+
+
+def ask_and_parse(return_type, messages):
     retry = False
 
     while True:
         completion = chat_with_retry(
             "gpt-3.5-turbo-16k",
-#            "gpt-4",
+            #            "gpt-4",
             messages,
         )
         content = completion.choices[0].message.content
@@ -116,9 +124,9 @@ def chat(task: str, var_map: dict, return_type, training_examples: ExampleType):
                 messages.append({"role": "assistant", "content": content})
                 messages.append({"role": "user", "content": str(e)})
                 retry = True
-            #print(str(e))
-            #print(content)
-            #print('retrying...')
+            # print(str(e))
+            # print(content)
+            # print('retrying...')
             pass
 
 
@@ -135,6 +143,12 @@ def make_messages(task, return_type, varMap, training_examples):
     return messages
 
 
+def merge_messages(base_messages, return_type):
+    system = make_system_message(return_type)
+    messages = [{"role": "system", "content": system}, *base_messages]
+    return messages
+
+
 def make_system_message(return_type):
     system_template = """You are a helpful assistant that generates responses in JSON format enclosed with ```json and ``` like:
 ```json
@@ -145,6 +159,8 @@ The answer inside the JSON code block should be given in the type defined as fol
 ```ts
 { reason: string; answer: {{type}} }
 ```
+Explain your answer in the `reason` field step by step.
+The value of `answer` should not contain any explanation or reason and should be only the final answer.
 """
     type = generate_schema(return_type)
     return re.sub(r"{{type}}", type, system_template)
