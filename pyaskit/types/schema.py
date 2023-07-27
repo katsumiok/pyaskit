@@ -6,6 +6,8 @@ import json
 def generate_schema(type) -> str:
     if isinstance(type, t.IntType):
         return "number"
+    if isinstance(type, t.FloatType):
+        return "number"    
     elif isinstance(type, t.BoolType):
         return "boolean"
     elif isinstance(type, t.StringType):
