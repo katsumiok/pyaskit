@@ -90,7 +90,7 @@ def parse(text: str, return_type):
 ```
 """
         )
-    return data["answer"]
+    return data["answer"], data["reason"] if "reason" in data else ""
 
 
 def chat(task: str, var_map: dict, return_type, training_examples: ExampleType):
@@ -114,8 +114,8 @@ def ask_and_parse(return_type, messages):
         )
         content = completion.choices[0].message.content
         try:
-            data = parse(content, return_type)
-            return data
+            data, reason = parse(content, return_type)
+            return data, reason
         except ValueError as e:
             if retry:
                 messages = messages[:-2]
@@ -163,7 +163,9 @@ Explain your answer in the `reason` field step by step.
 The value of `answer` should not contain any explanation or reason and should be only the final answer.
 """
     type = generate_schema(return_type)
-    return re.sub(r"{{type}}", type, system_template)
+    # Use replace instead of re.sub because of the following error when handling unicode characters:
+    # bad escape \u at position 1
+    return system_template.replace("{{type}}", type)
 
 
 def make_question(task: str, varMap: dict):
