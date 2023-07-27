@@ -6,6 +6,7 @@ import random
 import openai
 from .types.schema import generate_schema
 from .example import ExampleType
+import pyaskit.types as t
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -159,9 +160,11 @@ The answer inside the JSON code block should be given in the type defined as fol
 ```ts
 { reason: string; answer: {{type}} }
 ```
-Explain your answer in the `reason` field step by step.
-The value of `answer` should not contain any explanation or reason and should be only the final answer.
+Explain your answer step-by-step in the 'reason' field.
 """
+    if isinstance(return_type, t.StringType):
+        system_template += "No additional text should be part of the value in the 'answer' field"
+
     type = generate_schema(return_type)
     # Use replace instead of re.sub because of the following error when handling unicode characters:
     # bad escape \u at position 1
