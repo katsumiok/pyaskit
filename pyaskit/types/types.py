@@ -98,7 +98,7 @@ int = IntType()
 
 class FloatType(Type):
     def validate(self, value):
-        return isinstance(value, builtins.float)
+        return isinstance(value, builtins.float) or isinstance(value, builtins.int)
 
     def accept(self, visitor):
         return visitor.visit_float(self)
