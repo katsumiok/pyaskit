@@ -29,19 +29,25 @@ class Function:
         self.variables = extract_variables(self.template)
         check_examples(return_type, self.variables, training_examples)
         self.training_examples = training_examples
+        self.reason = ""
 
     def __call__(self, *args, **kwargs):
         converted_template = convert_template(self.template)
         variableMap = {}
         self.check_args(args, kwargs, self.variables, variableMap)
 
-        result = chat(
+        result, reason = chat(
             converted_template,
             variableMap,
             self.return_type,
             self.training_examples,
         )
+        self.reason = reason
         return result
+    
+    @property
+    def reason(self):
+        return ""
 
     def check_args(self, args, kwargs, variables, variableMap):
         for var, arg in zip(variables, args):
