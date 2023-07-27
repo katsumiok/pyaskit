@@ -53,8 +53,11 @@ class LiteralType(Type):
         return visitor.visit_literal(self)
 
 
-def literal(value):
-    return LiteralType(value)
+def literal(*values):
+    if len(values) == 1:
+        return LiteralType(values[0])
+    else:
+        return UnionType([LiteralType(value) for value in values])
 
 
 class DictType(Type):
