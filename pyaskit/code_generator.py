@@ -96,9 +96,10 @@ def implement_body(
     # print("skelton:", skeleton)
     messages = make_messages(skeleton)
     # print(messages)
-    while True:
+    for i in range(10):
         completion = chat_with_retry(model="gpt-3.5-turbo", messages=messages)
         code = extract_python_code(completion.choices[0].message.content)
         valid = validate_python_code(code, function_name, test_examples)
         if valid:
-            return code
+            return code, i
+    raise ValueError("Failed to generate valid code")
