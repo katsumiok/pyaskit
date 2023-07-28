@@ -106,6 +106,7 @@ def chat_raw(return_type, messages):
 
 def ask_and_parse(return_type, messages):
     retry = False
+    errors = []
 
     while True:
         completion = chat_with_retry(
@@ -116,19 +117,32 @@ def ask_and_parse(return_type, messages):
         content = completion.choices[0].message.content
         try:
             data, reason = parse(content, return_type)
-            return data, reason
+            return data, reason, errors, completion
         except ValueError as e:
             if retry:
                 messages = messages[:-2]
                 retry = False
             else:
+                s = '''Generates responses again in JSON format enclosed with ```json and ``` like:
+```json
+{ "reason": "Reason for the answer", "answer": "Final answer or result" }
+```
+
+The response in the JSON code block should be given in the type defined as follows:
+```ts
+{ reason: string; answer: {{type}} }
+```
+'''.replace("{{type}}", generate_schema(return_type))
                 messages.append({"role": "assistant", "content": content})
-                messages.append({"role": "user", "content": str(e)})
+                messages.append({"role": "system", "content": s})
                 retry = True
+            errors.append(str(e))
             # print(str(e))
+            # print("----------")
             # print(content)
+            # print("----------")
             # print('retrying...')
-            pass
+
 
 
 def make_messages(task, return_type, varMap, training_examples):
@@ -153,10 +167,10 @@ def merge_messages(base_messages, return_type):
 def make_system_message(return_type):
     system_template = """You are a helpful assistant that generates responses in JSON format enclosed with ```json and ``` like:
 ```json
-{ "reason": "Reason for the answer", "answer": "Final answer or result" }
+{ "reason": "Step-by-step reason for the answer", "answer": "Final answer or result" }
 ```
 
-The answer inside the JSON code block should be given in the type defined as follows:
+The response in the JSON code block should be given in the type defined as follows:
 ```ts
 { reason: string; answer: {{type}} }
 ```

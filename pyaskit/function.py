@@ -30,24 +30,38 @@ class Function:
         check_examples(return_type, self.variables, training_examples)
         self.training_examples = training_examples
         self._reason = ""
+        self._errors = []
+        self._completion = None
+        self._recompilation_count = 0
 
     def __call__(self, *args, **kwargs):
         converted_template = convert_template(self.template)
         variableMap = {}
         self.check_args(args, kwargs, self.variables, variableMap)
 
-        result, reason = chat(
+        result, self._reason, self._errors, self._completion = chat(
             converted_template,
             variableMap,
             self.return_type,
             self.training_examples,
         )
-        self._reason = reason
         return result
     
     @property
     def reason(self):
         return self._reason
+    
+    @property
+    def errors(self):
+        return self._errors
+    
+    @property
+    def completion(self):
+        return self._completion
+    
+    @property
+    def recompilation_count(self):
+        return self._recompilation_count
 
     def check_args(self, args, kwargs, variables, variableMap):
         for var, arg in zip(variables, args):
@@ -78,7 +92,7 @@ class Function:
                 self.training_examples,
             )
             # print("Prompt:", prompt)
-            code = implement_body(function_name, prompt, test_examples)
+            code, self._recompilation_count = implement_body(function_name, prompt, test_examples)
             os.makedirs(module_path, exist_ok=True)
             with open(module_file_path, "w") as f:
                 f.write(code)
