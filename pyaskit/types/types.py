@@ -28,6 +28,10 @@ class TypeVisitor:
 
     def visit_tuple(self, type):
         raise NotImplementedError("visit_tuple method not implemented")
+    
+    def visit_code(self, type):
+        raise NotImplementedError("visit_code method not implemented")
+    
 
 
 class Type:
@@ -40,6 +44,21 @@ class Type:
 
     def accept(self, visitor):
         raise NotImplementedError("accept method not implemented")
+   
+    
+class CodeType(Type):
+    def __init__(self, language: str) -> None:
+        self.language = language
+    
+    def validate(self, value):
+        return isinstance(value, builtins.str)
+    
+    def accept(self, visitor):
+        return visitor.visit_code(self)
+
+
+def code(language: str):
+    return CodeType(language)
 
 
 class LiteralType(Type):

@@ -73,7 +73,21 @@ def make_example_chat_messages(task, examples: ExampleType):
     return messages
 
 
+def parse_code(text: str, return_type):
+    # extract ```python...``` from text
+    #     json_text = text
+    pattern = r'```\w+\n(.*?)\n```'
+    python_code = re.findall(pattern, text, re.DOTALL)
+    if len(python_code) > 0:
+        return python_code[0]
+    raise ValueError("Code block is not found")
+
+
 def parse(text: str, return_type):
+    if isinstance(return_type, t.CodeType):
+        #print("parse_code")
+        #print(text)
+        return parse_code(text, return_type), ""
     data = extract_json(text)
     if data is None:
         raise ValueError("Answer is not in a single JSON block")
@@ -111,7 +125,7 @@ def ask_and_parse(return_type, messages):
     while True:
         completion = chat_with_retry(
             "gpt-3.5-turbo-16k",
-            #            "gpt-4",
+#            "gpt-4",
             messages,
         )
         content = completion.choices[0].message.content
@@ -123,30 +137,31 @@ def ask_and_parse(return_type, messages):
                 messages = messages[:-2]
                 retry = False
             else:
-                s = '''Generates responses again in JSON format enclosed with ```json and ``` like:
+                s = make_retry_message(return_type)
+                messages.append({"role": "assistant", "content": content})
+                messages.append({"role": "system", "content": s})
+                retry = True
+            errors.append(str(e))
+
+
+def make_retry_message(return_type):
+    if isinstance(return_type, t.CodeType):
+        return f"Generates code in {return_type.language} enclosed with ```{return_type.language} and ```"
+    else:
+        s = '''Generates responses again in JSON format enclosed with ```json and ``` like:
 ```json
 { "reason": "Reason for the answer", "answer": "Final answer or result" }
 ```
-
 The response in the JSON code block should be given in the type defined as follows:
 ```ts
 { reason: string; answer: {{type}} }
 ```
 '''.replace("{{type}}", generate_schema(return_type))
-                messages.append({"role": "assistant", "content": content})
-                messages.append({"role": "system", "content": s})
-                retry = True
-            errors.append(str(e))
-            # print(str(e))
-            # print("----------")
-            # print(content)
-            # print("----------")
-            # print('retrying...')
-
+        return s
 
 
 def make_messages(task, return_type, varMap, training_examples):
-    system = make_system_message(return_type)
+    system = make_system_message(return_type) if not isinstance(return_type, t.CodeType) else make_system_message_for_code(return_type)
     question = make_question(task, varMap)
     example_messages = make_example_chat_messages(task, training_examples)
     messages = [
@@ -183,6 +198,19 @@ Explain your answer step-by-step in the 'reason' field.
     # Use replace instead of re.sub because of the following error when handling unicode characters:
     # bad escape \u at position 1
     return system_template.replace("{{type}}", type)
+
+
+def make_system_message_for_code(return_type):
+    system_template = """You are a helpful assistant that generates code in written in {{language}} enclosed with ```{{language}} and ``` like:
+```{{language}}
+Program written in {{language}}:
+```
+Let's think step-by-step!
+"""
+    # Use replace instead of re.sub because of the following error when handling unicode characters:
+    # bad escape \u at position 1
+    return system_template.replace("{{language}}", return_type.language)
+
 
 
 def make_question(task: str, varMap: dict):

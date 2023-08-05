@@ -6,7 +6,9 @@ from .types import (
     list,
     tuple,
     dict,
+    literal,
     union,
+    code,
     IntType,
     FloatType,
     StringType,
@@ -16,6 +18,6 @@ from .types import (
     DictType,
     LiteralType,
     UnionType,
-    literal,
+    CodeType,
     Type,
 )
