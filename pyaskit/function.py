@@ -95,6 +95,7 @@ class Function:
             code, self._recompilation_count = implement_body(function_name, prompt, test_examples)
             os.makedirs(module_path, exist_ok=True)
             with open(module_file_path, "w") as f:
+                f.write("# Recompilation count: " + str(self._recompilation_count) + "\n")
                 f.write(code)
         else:
             # logger.setLevel(logging.DEBUG)

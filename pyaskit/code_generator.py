@@ -34,11 +34,11 @@ def test_example(func, example: dict) -> bool:
     return func(**input) == output
 
 
-def test_examples(func, examples: ExampleType) -> bool:
+def test(func, examples: ExampleType) -> bool:
     return all(test_example(func, example) for example in examples)
 
 
-def validate_python_code(code: str, func_name, examples: ExampleType) -> bool:
+def validate_python_code(code: str, func_name):
     # save code in a file
     with open(TMP_MOD_PATH, "w") as f:
         f.write(code)
@@ -48,15 +48,16 @@ def validate_python_code(code: str, func_name, examples: ExampleType) -> bool:
             importlib.reload(module)
         except ImportError:
             logger.debug(f"Module {TMP_MOD_NAME} not found")
-            return False
+            return None
         except Exception as e:
             logger.debug(f"An error occurred: {e}")
-            return False
+            return None
     if not hasattr(module, func_name):
         logger.debug(f"Function {func_name} not found")
-        return False
+        return None
     func = getattr(module, func_name)
-    return test_examples(func, examples)
+    return func
+
 
 
 def make_messages(skeleton: str):
@@ -96,10 +97,18 @@ def implement_body(
     # print("skelton:", skeleton)
     messages = make_messages(skeleton)
     # print(messages)
+    test_failed_count = 0
     for i in range(10):
         completion = chat_with_retry(model="gpt-3.5-turbo", messages=messages)
         code = extract_python_code(completion.choices[0].message.content)
-        valid = validate_python_code(code, function_name, test_examples)
-        if valid:
-            return code, i
+        func = validate_python_code(code, function_name)
+        if func is None:
+            continue
+        ok = test(func, test_examples)
+        if ok:
+            return code, test_failed_count
+        else:
+            test_failed_count += 1
+            print("Test failed")
+            print("Code:", code)
     raise ValueError("Failed to generate valid code")
