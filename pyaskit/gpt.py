@@ -122,7 +122,7 @@ def ask_and_parse(return_type, messages):
     retry = False
     errors = []
 
-    while True:
+    for _ in range(10):
         completion = chat_with_retry(
             "gpt-3.5-turbo-16k",
 #            "gpt-4",
@@ -169,7 +169,7 @@ def make_messages(task, return_type, varMap, training_examples):
         *example_messages,
         {"role": "user", "content": question},
     ]
-    # print(messages)
+    # print('\n'.join([message["content"] for message in messages]))
     return messages
 
 
@@ -189,10 +189,9 @@ The response in the JSON code block should be given in the type defined as follo
 ```ts
 { reason: string; answer: {{type}} }
 ```
-Explain your answer step-by-step in the 'reason' field.
-"""
+Explain your answer step-by-step in the 'reason' field."""
     if isinstance(return_type, t.StringType):
-        system_template += "No additional text should be part of the value in the 'answer' field"
+        system_template += "\nNo additional text should be part of the value in the 'answer' field."
 
     type = generate_schema(return_type)
     # Use replace instead of re.sub because of the following error when handling unicode characters:
@@ -216,8 +215,7 @@ Let's think step-by-step!
 def make_question(task: str, varMap: dict):
     # print("make_question: ", task)
     question = task + "\n\n"
-    if len(varMap) > 0:
-        question += "where\n"
-        for key in varMap:
-            question += f"  '{key}' = {json.dumps(varMap[key])}\n"
-    return question
+    if len(varMap) == 0:
+        return question
+    var_list = [f"  '{key}' = {json.dumps(varMap[key])}" for key in varMap]
+    return question + "where\n" + '\n'.join(var_list)
