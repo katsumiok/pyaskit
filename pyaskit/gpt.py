@@ -7,6 +7,7 @@ import openai
 from .types.schema import generate_schema
 from .example import ExampleType
 import pyaskit.types as t
+from . import config
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -124,7 +125,7 @@ def ask_and_parse(return_type, messages):
 
     for _ in range(10):
         completion = chat_with_retry(
-            "gpt-3.5-turbo-16k",
+            config.get_model(),
 #            "gpt-4",
             messages,
         )

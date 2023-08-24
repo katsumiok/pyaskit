@@ -1,12 +1,14 @@
 import re
-import sys
 import os
 import importlib
 import tempfile
+from timeout_decorator import timeout, TimeoutError
 from .example import ExampleType
 from .gpt import chat_with_retry
 from .logging_config import setup_logger
 from .path import add_to_sys_path
+from . import config
+
 
 logger = setup_logger(__name__)
 
@@ -24,6 +26,7 @@ def extract_python_code(text: str) -> str:
     return ""
 
 
+@timeout(60)
 def test_example(func, example: dict) -> bool:
     input = example["input"]
     output = example["output"]
@@ -35,7 +38,10 @@ def test_example(func, example: dict) -> bool:
 
 
 def test(func, examples: ExampleType) -> bool:
-    return all(test_example(func, example) for example in examples)
+    try:
+        return all(test_example(func, example) for example in examples)
+    except TimeoutError:
+        return False
 
 
 def validate_python_code(code: str, func_name):
@@ -57,7 +63,6 @@ def validate_python_code(code: str, func_name):
         return None
     func = getattr(module, func_name)
     return func
-
 
 
 def make_messages(skeleton: str):
@@ -99,7 +104,7 @@ def implement_body(
     # print(messages)
     test_failed_count = 0
     for i in range(10):
-        completion = chat_with_retry(model="gpt-3.5-turbo", messages=messages)
+        completion = chat_with_retry(model=config.get_model(), messages=messages)
         code = extract_python_code(completion.choices[0].message.content)
         func = validate_python_code(code, function_name)
         if func is None:
@@ -109,6 +114,6 @@ def implement_body(
             return code, test_failed_count
         else:
             test_failed_count += 1
-            print("Test failed")
-            print("Code:", code)
+            # print("Test failed")
+            # print("Code:", code)
     raise ValueError("Failed to generate valid code")
