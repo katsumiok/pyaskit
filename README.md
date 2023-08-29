@@ -34,7 +34,6 @@ Using *AskIt*, you can deploy LLMs for a multitude of tasks, such as:
 To install *AskIt*, run this command in your terminal:
 
 ```bash
-# XXX: The package is not published yet.
 pip install pyaskit
 ```
 or
