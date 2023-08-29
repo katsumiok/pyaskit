@@ -1,0 +1,40 @@
+{
+  "editor.formatOnSave": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "python.formatting.provider": "none",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Args": ["--max-line-length=88"],
+  "[python]": {
+    "editor.tabSize": 4
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/*.js.map": true,
+    "**/*.js": { "when": "$(basename).ts" },
+    "**/**.js": { "when": "$(basename).tsx" },
+    "**/*.d.ts": true,
+    "**/*.d.ts.map": true
+  },
+  "cSpell.words": [
+    "graphviz",
+    "Katsumi",
+    "Nonterminal",
+    "Nonterminals",
+    "Okuda",
+    "Packrat",
+    "Postorder",
+    "subexp",
+    "subname"
+  ]
+}
