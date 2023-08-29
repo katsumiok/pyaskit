@@ -1,7 +1,6 @@
 from . import types as t
 import time
 from contextlib import contextmanager
-from .function_name import generate_unique_function_name
 from .example import ExampleType
 from .function import Function
 
