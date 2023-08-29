@@ -39,16 +39,22 @@ pip install pyaskit
 ```
 or
 ```bash
-# XXX: I need to invite members to access the private repository.
 pip install git+https://github.com/katsumiok/pyaskit.git
 ```
 
-
-Before using *AskIt*, you need to set your OpenAI API key as an environment variable `OPENAI_API_KEY`:
+Before using *AskIt*, you need to set your OpenAI API key as an environment variable `OPENAI_API_KEY` and `ASKIT_MODEL`:
 ```bash
 export OPENAI_API_KEY=<your OpenAI API key>
 ```
-`<you OpenAI API key>` is a string that looks like this: `sk-<your key>`. You can find your API key in the [OpenAI dashboard](https://platform.openai.com/account/api-keys).
+`<you OpenAI API key>` is a string that looks like this: `sk-<your key>`.
+ You can find your API key in the [OpenAI dashboard](https://platform.openai.com/account/api-keys).
+
+You can also specify the model name as an environment variable `ASKIT_MODEL`:
+```bash
+export ASKIT_MODEL=<model name>
+```
+`<model name>` is the name of the model you want to use. 
+The latest AskIt is tested with `gpt-4` and `gpt-3.5-turbo-16k`. You can find the list of available models in the [OpenAI API documentation](https://platform.openai.com/docs/models).
 ## Getting Started
 
 Here are some basic examples to help you familiarize yourself with *AskIt*:
