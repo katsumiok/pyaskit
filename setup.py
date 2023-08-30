@@ -2,9 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name="pyaskit",
-    version="1.0.0",
+    version="1.0.1",
     packages=find_packages(),
-    description="AskIt: Language support for programming with large language models (GPT-3.5, GPT-4).",
+    description="AskIt: Unified programming interface for programming with large language models (GPT-3.5, GPT-4)",
+    long_description=open('README.md').read(),
+    long_description_content_type="text/markdown",
     author="Katsumi Okuda",
     author_email="okuda@csail.mit.edu",
     url="https://github.com/katsumiok/pyaskit",
