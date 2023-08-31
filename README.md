@@ -1,7 +1,9 @@
 <!-- {% raw %} -->
 # *AskIt* (pyaskit)
 
-
+[![Maintainability](https://api.codeclimate.com/v1/badges/c692eebf6897eeee8ea7/maintainability)](https://codeclimate.com/github/katsumiok/pyaskit/maintainability)
+[![PyPI version](https://badge.fury.io/py/pyaskit.svg)](https://badge.fury.io/py/pyaskit)
+[![arXiv](https://img.shields.io/badge/arXiv-2308.15645-b31b1b.svg)](https://arxiv.org/abs/2308.15645)
 
 ## Introduction
 
@@ -23,7 +25,7 @@ Using *AskIt*, you can deploy LLMs for a multitude of tasks, such as:
 - [x] Template-Based Function Definition: Define functions using a prompt template.
     ![Template-based function definition demonstration](https://katsumiok.github.io/pyaskit/images/template_based_func_def.gif)
 
-- [x] Natural Language Programming: Employ code synthesis for task execution.
+- [x] Code Generation: Generate functions from the unified interface.
     ![Natural Language Programming demonstration](https://katsumiok.github.io/pyaskit/images/codable_task.gif)
 
 - [x] Programming by Example (PBE): Define functions using examples.
@@ -45,7 +47,7 @@ Before using *AskIt*, you need to set your OpenAI API key as an environment vari
 ```bash
 export OPENAI_API_KEY=<your OpenAI API key>
 ```
-`<you OpenAI API key>` is a string that looks like this: `sk-<your key>`.
+`<your OpenAI API key>` is a string that looks like this: `sk-<your key>`.
  You can find your API key in the [OpenAI dashboard](https://platform.openai.com/account/api-keys).
 
 You can also specify the model name as an environment variable `ASKIT_MODEL`:
@@ -205,4 +207,18 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and t
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
+## Citation
+
+If you use our software in your research, please cite our paper:
+
+```bibtex
+@misc{okuda2023askit,
+      title={AskIt: Unified Programming Interface for Programming with Large Language Models}, 
+      author={Katsumi Okuda and Saman Amarasinghe},
+      year={2023},
+      eprint={2308.15645},
+      archivePrefix={arXiv},
+      primaryClass={cs.PL}
+}
+```
 <!-- {% endraw %} -->
