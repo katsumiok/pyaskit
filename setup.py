@@ -14,6 +14,7 @@ setup(
     install_requires=[
         "openai",
         "unidecode",
+        "timeout-decorator",
     ],
     classifiers=[
         "Programming Language :: Python",
