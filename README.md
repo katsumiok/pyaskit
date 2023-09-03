@@ -1,10 +1,12 @@
 <!-- {% raw %} -->
 # *AskIt* (pyaskit)
 
+[![Python CI](https://github.com/katsumiok/pyaskit/actions/workflows/ci.yml/badge.svg)](https://github.com/katsumiok/pyaskit/actions/workflows/ci.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/c692eebf6897eeee8ea7/maintainability)](https://codeclimate.com/github/katsumiok/pyaskit/maintainability)
+[![codecov](https://codecov.io/gh/katsumiok/pyaskit/graph/badge.svg?token=BG36DVIXBY)](https://codecov.io/gh/katsumiok/pyaskit)
 [![PyPI version](https://badge.fury.io/py/pyaskit.svg)](https://badge.fury.io/py/pyaskit)
 [![arXiv](https://img.shields.io/badge/arXiv-2308.15645-b31b1b.svg)](https://arxiv.org/abs/2308.15645)
-[![Python CI](https://github.com/katsumiok/pyaskit/actions/workflows/ci.yml/badge.svg)](https://github.com/katsumiok/pyaskit/actions/workflows/ci.yml)
+
 ## Introduction
 
 *AskIt* serves as a dedicated library or domain-specific language designed to streamline the utilization of Large Language Models (LLMs) such as GPT-4. It simplifies the complexities of prompt engineering and eradicates the requirement for parsing responses from LLMs, making programming tasks smoother.
@@ -168,6 +170,9 @@ The following table describes the various types supported by *AskIt*:
 | `list` | List |  `t.list(t.int)` | [1, 2, 3] |
 | `dict` | Dictionary |  `t.dict({` <br>&nbsp;`'a': t.int, `<br>&nbsp;`'b': t.int` <br>`})` |{'a': 1, 'b': 2} |
 | `union` | Union (Multiple Possible Values) | `t.union(t.literal('yes'), t.literal('no'))` | "yes" or "no" |
+|         |                                  | `t.literal('yes') | t.literal('no')` | "yes" or "no" |
+|         |                                  | `t.literal('yes', 'no')` | "yes" or "no" |
+
 
 Note that each type declaration aids *AskIt* in parsing and understanding the desired output, ensuring your LLM returns data in the precise format you require.
 
