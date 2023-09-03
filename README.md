@@ -4,7 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/c692eebf6897eeee8ea7/maintainability)](https://codeclimate.com/github/katsumiok/pyaskit/maintainability)
 [![PyPI version](https://badge.fury.io/py/pyaskit.svg)](https://badge.fury.io/py/pyaskit)
 [![arXiv](https://img.shields.io/badge/arXiv-2308.15645-b31b1b.svg)](https://arxiv.org/abs/2308.15645)
-
+[![Python CI](https://github.com/katsumiok/pyaskit/actions/workflows/ci.yml/badge.svg)](https://github.com/katsumiok/pyaskit/actions/workflows/ci.yml)
 ## Introduction
 
 *AskIt* serves as a dedicated library or domain-specific language designed to streamline the utilization of Large Language Models (LLMs) such as GPT-4. It simplifies the complexities of prompt engineering and eradicates the requirement for parsing responses from LLMs, making programming tasks smoother.
