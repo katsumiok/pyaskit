@@ -50,9 +50,26 @@ class TestTypeVisitor(unittest.TestCase):
 
 
 class TestType(unittest.TestCase):
+    
+    def test_validate_raises_error(self):
+        with self.assertRaises(NotImplementedError):
+            t.types.Type().validate(None)
+
+
+    def test_accept_raises_error(self):
+        with self.assertRaises(NotImplementedError):
+            t.types.Type().accept(None)
+
+    
     def test_int(self):
         self.assertTrue(t.int.validate(5))
         self.assertFalse(t.int.validate("5"))
+        
+    def test_float(self):
+        self.assertTrue(t.float.validate(5))
+        self.assertTrue(t.float.validate(5.5))
+        self.assertFalse(t.int.validate("5"))
+
 
     def test_bool(self):
         self.assertTrue(t.bool.validate(True))
@@ -61,6 +78,10 @@ class TestType(unittest.TestCase):
     def test_string(self):
         self.assertTrue(t.str.validate("5"))
         self.assertFalse(t.str.validate(5))
+        
+    def test_code(self):
+        self.assertTrue(t.code("python").validate("5"))
+        self.assertFalse(t.code("python").validate(5))
 
     def test_list(self):
         self.assertTrue(t.list(t.int).validate([1, 2, 3]))
@@ -95,6 +116,10 @@ class TestType(unittest.TestCase):
         self.assertFalse((t.literal("yes", "no")).validate("maybe"))
         with self.assertRaises(TypeError):
             self.assertFalse((t.literal("yes") | "no"))
+            
+    def test_tuple(self):
+        self.assertTrue(t.tuple(t.int, t.str).validate([1, "hello"]))
+        self.assertFalse(t.tuple(t.int, t.str).validate([1, 2]))
 
 
 if __name__ == "__main__":
