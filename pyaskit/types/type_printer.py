@@ -49,3 +49,7 @@ class {type_name}(TypedDict):
     def visit_union(self, type):
         self.imports.add("Union")
         return f'Union[{", ".join([t.accept(self) for t in type.types])}]'
+
+    def visit_tuple(self, type):
+        self.imports.add("Tuple")
+        return f'Tuple[{", ".join([t.accept(self) for t in type.types])}]'
