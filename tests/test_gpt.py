@@ -7,8 +7,9 @@ class TestGPT(unittest.TestCase):
         self.assertEqual(1, gpt.extract_json("...```json 1 ```..."))
         data = gpt.extract_json('{ "reason": "ok"}')
         self.assertEqual("ok", data["reason"])
-        self.assertEqual(None, gpt.extract_json("...```json 1 ```...```"))
-
+        # expect raise
+        with self.assertRaises(ValueError):
+            gpt.extract_json("...```json 1 ```...```")
 
 if __name__ == "__main__":
     unittest.main()

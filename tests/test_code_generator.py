@@ -23,11 +23,11 @@ def inc(x): return x + 1
         valid_code = """
 def inc(x): return x + 1
 """
-        self.assertTrue(validate_python_code(valid_code, "inc", []))
+        self.assertTrue(validate_python_code(valid_code, "inc"))
         invalid_code = """
 def inc(x):
 """
-        self.assertFalse(validate_python_code(invalid_code, "inc", []))
+        self.assertFalse(validate_python_code(invalid_code, "inc"))
 
 
 if __name__ == "__main__":
