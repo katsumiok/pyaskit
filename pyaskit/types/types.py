@@ -37,7 +37,7 @@ class TypeVisitor:
 class Type:
     # override | operator
     def __or__(self, other):
-        return UnionType(self, other)
+        return UnionType([self, other])
 
     def validate(self, value):
         raise NotImplementedError("validate method not implemented")
