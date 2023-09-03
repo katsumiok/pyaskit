@@ -83,8 +83,10 @@ class TestType(unittest.TestCase):
 
     def test_union(self):
         self.assertTrue((t.literal("yes") | t.literal("no")).validate("yes"))
-        self.assertTrue((t.literal("yes") | t.literal("no")).validate("no"))
-        self.assertFalse((t.literal("yes") | t.literal("no")).validate("maybe"))
+        self.assertTrue(t.union(t.literal("yes"), t.literal("no")).validate("no"))
+        self.assertFalse((t.literal("yes", "no")).validate("maybe"))
+        with self.assertRaises(TypeError):
+            self.assertFalse((t.literal("yes") | "no"))
 
 
 if __name__ == "__main__":
