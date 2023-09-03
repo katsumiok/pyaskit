@@ -65,6 +65,8 @@ class TestType(unittest.TestCase):
     def test_list(self):
         self.assertTrue(t.list(t.int).validate([1, 2, 3]))
         self.assertFalse(t.list(t.int).validate([1, 2, "3"]))
+        with self.assertRaises(TypeError):
+            self.assertFalse(t.list(1))
 
     def test_dict(self):
         self.assertTrue(
@@ -72,6 +74,12 @@ class TestType(unittest.TestCase):
         )
         self.assertTrue(t.dict({"a": t.list(t.int)}).validate({"a": [5, 6]}))
         self.assertFalse(t.dict({"a": t.int, "b": t.str}).validate({"a": 5, "b": 5}))
+        self.assertFalse(t.dict({"a": t.int, "b": t.str}).validate(1))
+        self.assertFalse(t.dict({"a": t.int, "b": t.str}).validate({"a": 5}))
+        with self.assertRaises(TypeError):
+            self.assertFalse(t.dict({"a": 1}))
+        with self.assertRaises(TypeError):
+            self.assertFalse(t.dict({1: t.int}))    
 
     def test_literal(self):
         self.assertTrue(t.literal(5).validate(5))
