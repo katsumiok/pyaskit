@@ -1,3 +1,4 @@
+from typing import List
 from .example import ExampleType
 from .types.type_printer import TypePrinter
 from . import types as t
@@ -26,7 +27,7 @@ def make_coding_prompt(
     return_type: t.Type,
     task_description: str,
     function_name: str,
-    variables: list[str],
+    variables: List[str],
     training_examples: ExampleType = [],
 ):
     param_list = ", ".join(variables)
