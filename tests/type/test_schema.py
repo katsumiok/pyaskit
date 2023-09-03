@@ -35,6 +35,10 @@ class TestGenerateSchema(unittest.TestCase):
         self.assertEqual(
             generate_schema(t.literal("yes") | t.literal("no")), '"yes" | "no"'
         )
+        
+    def test_union(self):
+        self.assertEqual(generate_schema(t.tuple(t.int, t.float)), "[number, number]")
+        
 
 
 if __name__ == "__main__":
