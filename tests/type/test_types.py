@@ -2,6 +2,53 @@ import unittest
 import pyaskit.types as t
 
 
+class TestTypeVisitor(unittest.TestCase):
+    
+    def setUp(self):
+        self.visitor = t.types.TypeVisitor()
+    
+    def test_visit_literal_raises_error(self):
+        with self.assertRaises(NotImplementedError):
+            self.visitor.visit_literal(None)
+    
+    def test_visit_dict_raises_error(self):
+        with self.assertRaises(NotImplementedError):
+            self.visitor.visit_dict(None)
+
+    def test_visit_int_raises_error(self):
+        with self.assertRaises(NotImplementedError):
+            self.visitor.visit_int(None)
+
+    def test_visit_float_raises_error(self):
+        with self.assertRaises(NotImplementedError):
+            self.visitor.visit_float(None)
+    
+    def test_visit_string_raises_error(self):
+        with self.assertRaises(NotImplementedError):
+            self.visitor.visit_string(None)
+
+    def test_visit_bool_raises_error(self):
+        with self.assertRaises(NotImplementedError):
+            self.visitor.visit_bool(None)
+    
+    def test_visit_list_raises_error(self):
+        with self.assertRaises(NotImplementedError):
+            self.visitor.visit_list(None)
+    
+    def test_visit_union_raises_error(self):
+        with self.assertRaises(NotImplementedError):
+            self.visitor.visit_union(None)
+
+    def test_visit_tuple_raises_error(self):
+        with self.assertRaises(NotImplementedError):
+            self.visitor.visit_tuple(None)
+    
+    def test_visit_code_raises_error(self):
+        with self.assertRaises(NotImplementedError):
+            self.visitor.visit_code(None)
+
+
+
 class TestType(unittest.TestCase):
     def test_int(self):
         self.assertTrue(t.int.validate(5))
