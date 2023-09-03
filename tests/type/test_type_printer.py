@@ -41,6 +41,21 @@ class TestTypePrinter(unittest.TestCase):
             "Union[Literal['yes'], Literal['no']]",
         )
         self.assertEqual(printer.imports, {"Union", "Literal"})
+        
+    def test_tuple(self):
+        printer = TypePrinter()
+        self.assertEqual(
+            t.tuple(t.int, t.float).accept(printer),
+            "Tuple[int, float]",
+        )
+        self.assertEqual(printer.imports, {"Tuple"})
+        
+    def test_code(self):
+        printer = TypePrinter()
+        with self.assertRaises(NotImplementedError):
+            t.code('python').accept(printer)
+
+
 
 
 if __name__ == "__main__":
