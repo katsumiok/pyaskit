@@ -5,7 +5,9 @@ import json
 import time
 import random
 import pyaskit.gpt as gpt
-from pyaskit.gpt import chat_with_retry, make_question, make_answer
+import pyaskit
+import pyaskit.types as t
+from pyaskit.gpt import chat_with_retry, make_question, make_answer, make_example_chat_messages, make_qa, parse_code
 
 class TestGPT(unittest.TestCase):
     def test_extract_json(self):
@@ -132,6 +134,83 @@ class TestMakeAnswer(unittest.TestCase):
 }}
 ```"""
         self.assertEqual(make_answer(output), expected_response)
+        
+
+
+class TestMakeExampleChatMessages(unittest.TestCase):
+
+    @patch("pyaskit.gpt.make_qa")
+    def test_make_example_chat_messages(self, mock_make_qa):
+        # Mocking the make_qa function to return a fixed output
+        mock_make_qa.return_value = ("mock_question", "mock_answer")
+
+        task = "mock_task"
+        examples = [
+            {"input": "input1", "output": "output1"},
+            {"input": "input2", "output": "output2"}
+        ]
+        
+        result = make_example_chat_messages(task, examples)
+
+        expected_result = [
+            {"role": "user", "content": "mock_question"},
+            {"role": "assistant", "content": "mock_answer"},
+            {"role": "user", "content": "mock_question"},
+            {"role": "assistant", "content": "mock_answer"}
+        ]
+
+        self.assertEqual(result, expected_result)
+
+
+class TestMakeQA(unittest.TestCase):
+    
+    @patch("pyaskit.gpt.make_question")  # Replace 'your_module_name' with the name of your module.
+    @patch("pyaskit.gpt.make_answer")    # Replace 'your_module_name' with the name of your module.
+    def test_make_qa(self, mock_make_answer, mock_make_question):
+        # Setup mock returns
+        mock_make_question.return_value = "mocked_question"
+        mock_make_answer.return_value = "mocked_answer"
+
+        task = "test_task"
+        example = {"input": "test_input", "output": "test_output"}
+
+        # Call the function
+        q, a = make_qa(task, example)
+
+        # Assertions
+        self.assertEqual(q, "mocked_question")
+        self.assertEqual(a, "mocked_answer")
+
+        mock_make_question.assert_called_once_with(task, example["input"])
+        mock_make_answer.assert_called_once_with(example["output"])
+        
+
+class TestParseCode(unittest.TestCase):
+    def test_valid_python_code_extraction(self):
+        # Test the extraction of python code
+        text = """
+Some text before the code.
+```python
+def hello():
+    print("Hello, World!")
+```
+Some text after the code.
+"""
+        extracted_code = parse_code(text, t.CodeType("python"))
+        expected_code = 'def hello():\n    print("Hello, World!")'
+        self.assertEqual(extracted_code.strip(), expected_code)
+
+    def test_invalid_python_code_extraction(self):
+        # Test the extraction of python code
+        text = """
+Some text.
+"""
+        with self.assertRaises(ValueError):
+            parse_code(text, t.CodeType("python"))
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
