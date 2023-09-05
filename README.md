@@ -21,8 +21,11 @@ Using *AskIt*, you can deploy LLMs for a multitude of tasks, such as:
 
 ## Key Features
 
-- [x] Type-Guided Output Control: Enhance LLM precision with types.
-    ![Type-guided output control demonstration](https://katsumiok.github.io/pyaskit/images/type_guided_output_control.gif)
+- [x] Type-Guided Output Control: Get a response in the specified type. 
+  - No need to specify the output format in the prompt
+  - No need to parse the response to extract the desired output
+  
+  ![Type-guided output control demonstration](https://katsumiok.github.io/pyaskit/images/type_guided_output_control.gif)
 
 - [x] Template-Based Function Definition: Define functions using a prompt template.
     ![Template-based function definition demonstration](https://katsumiok.github.io/pyaskit/images/template_based_func_def.gif)
