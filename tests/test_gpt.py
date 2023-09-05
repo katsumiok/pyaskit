@@ -7,7 +7,7 @@ import random
 import pyaskit.gpt as gpt
 import pyaskit
 import pyaskit.types as t
-from pyaskit.gpt import chat_with_retry, make_question, make_answer, make_example_chat_messages, make_qa, parse_code
+from pyaskit.gpt import chat_with_retry, make_question, make_answer, make_example_chat_messages, make_qa, parse_code, parse, ask_and_parse, config
 
 class TestGPT(unittest.TestCase):
     def test_extract_json(self):
@@ -209,8 +209,82 @@ Some text.
             parse_code(text, t.CodeType("python"))
 
 
+class TestParseFunction(unittest.TestCase):
+
+    # Test successful parsing for CodeType
+    def test_parse_code_success(self):
+        text = '''```python
+print("Hello, world!")
+```'''
+        return_type = t.CodeType("python")
+        result, _ = parse(text, return_type)
+        self.assertEqual(result, 'print("Hello, world!")')
+    
+    # Test failure due to missing code block for CodeType
+    def test_parse_code_failure(self):
+        text = 'print("Hello, world!")'
+        return_type = t.CodeType("python")
+        with self.assertRaises(ValueError):
+            parse(text, return_type)
+    
+    # Test successful parsing for JSON data
+    def test_parse_json_success(self):
+        text = '''```json
+{
+    "reason": "Test Reason",
+    "answer": "Hello, world!"
+}
+```'''
+        return_type = t.StringType()
+        data, reason = parse(text, return_type)
+        self.assertEqual(data, "Hello, world!")
+        self.assertEqual(reason, "Test Reason")
+    
+    # Test JSON parsing failure due to missing `answer` field
+    def test_parse_json_missing_answer(self):
+        text = '''```json
+{
+    "reason": "Test Reason"
+}
+```'''
+        return_type = t.StringType()
+        with self.assertRaises(ValueError):
+            parse(text, return_type)
+
+    # Test JSON parsing failure due to wrong type in `answer` field
+    def test_parse_json_wrong_type(self):
+        text = '''```json
+{
+    "reason": "Test Reason",
+    "answer": 1234
+}
+```'''
+        return_type = t.StringType()
+        with self.assertRaises(ValueError):
+            parse(text, return_type)
+
+class TestAskAndParse(unittest.TestCase):
+
+    # Mock the openai.ChatCompletion.create response
+    mock_response = Mock()
+    mock_response.choices = [Mock()]
+    mock_response.choices[0].message = Mock()
+
+    @patch("pyaskit.gpt.chat_with_retry", return_value=mock_response)
+    @patch("pyaskit.gpt.parse", return_value=("parsed_answer", "parsed_reason"))
+    def test_successful_chat(self, mock_parse, mock_chat_with_retry):
+        self.mock_response.choices[0].message.content = "mock_content"
+        
+        data, reason, errors, completion = ask_and_parse(None, [])
+
+        self.assertEqual(data, "parsed_answer")
+        self.assertEqual(reason, "parsed_reason")
+        self.assertEqual(errors, [])
+        mock_parse.assert_called_once_with("mock_content", None)
 
 
 
-if __name__ == '__main__':
+# More test cases can be added
+
+if __name__ == "__main__":
     unittest.main()
