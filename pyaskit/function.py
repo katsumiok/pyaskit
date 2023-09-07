@@ -20,11 +20,12 @@ module_path = os.path.join(os.getcwd(), "askit")
 
 class Function:
     def __init__(
-        self, return_type, template: str, training_examples: ExampleType = []
+        self, return_type, param_types, template: str, training_examples: ExampleType = []
     ) -> None:
         if not isinstance(return_type, t.Type):
             raise ValueError("return_type must be a Type defined in py_askit.type")
         self.return_type = return_type
+        self.param_types = param_types
         self.template = template
         self.variables = extract_variables(self.template)
         check_examples(return_type, self.variables, training_examples)
@@ -86,6 +87,7 @@ class Function:
             print(f"Creating file {module_file_path}")
             prompt = make_coding_prompt(
                 self.return_type,
+                self.param_types,
                 task,
                 function_name,
                 self.variables,

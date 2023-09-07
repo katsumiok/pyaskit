@@ -30,5 +30,9 @@ def generate_schema(type) -> str:
         return f'[{", ".join(types)}]'
     elif isinstance(type, t.CodeType):
         return "string"
+    elif isinstance(type, t.RecordType):
+        k = generate_schema(type.key_type)
+        v = generate_schema(type.value_type)
+        return f'{{[key: {k}]: {v}}}]'
 
     raise TypeError(f"Unknown type: {type}")

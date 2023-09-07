@@ -121,6 +121,9 @@ class TestType(unittest.TestCase):
         self.assertTrue(t.tuple(t.int, t.str).validate([1, "hello"]))
         self.assertFalse(t.tuple(t.int, t.str).validate([1, 2]))
 
+    def test_record(self):
+        self.assertTrue(t.record(t.str, t.int).validate({"a": 5, "b": 6}))
+
 
 if __name__ == "__main__":
     unittest.main()

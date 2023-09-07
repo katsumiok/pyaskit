@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union, Dict
 from .example import ExampleType
 from .types.type_printer import TypePrinter
 from . import types as t
@@ -23,15 +23,23 @@ def make_example_code(function_name: str, examples: ExampleType):
     return code
 
 
+def make_parameter(variable: str, param_types: Union[Dict[str, t.Type], None], printer: TypePrinter):
+    if param_types is None or variable not in param_types:
+        return variable
+    else:
+        return f"{variable}: {param_types[variable].accept(printer)}"
+    
+
 def make_coding_prompt(
     return_type: t.Type,
+    param_types: Union[Dict[str, t.Type], None],
     task_description: str,
     function_name: str,
     variables: List[str],
     training_examples: ExampleType = [],
 ):
-    param_list = ", ".join(variables)
     printer = TypePrinter()
+    param_list = ", ".join([make_parameter(variable, param_types, printer) for variable in variables])
     return_type_str = return_type.accept(printer)
     type_defs = "|n".join(printer.type_defs)
     import_stmt = (
