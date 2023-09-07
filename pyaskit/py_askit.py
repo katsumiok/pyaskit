@@ -1,4 +1,3 @@
-from overloading import overload
 from typing import Union, Dict, TypedDict, List, Tuple
 from . import types as t
 from .types.converter import convert_type
