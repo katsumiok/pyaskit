@@ -12,9 +12,9 @@ class TestGenerateSchema(unittest.TestCase):
 
     def test_string(self):
         self.assertEqual(generate_schema(t.str), "string")
-        
+
     def test_code(self):
-        self.assertEqual(generate_schema(t.code('python')), "string")
+        self.assertEqual(generate_schema(t.code("python")), "string")
 
     def test_list(self):
         self.assertEqual(generate_schema(t.list(t.int)), "Array(number)")
@@ -38,10 +38,10 @@ class TestGenerateSchema(unittest.TestCase):
         self.assertEqual(
             generate_schema(t.literal("yes") | t.literal("no")), '"yes" | "no"'
         )
-        
+
     def test_tuple(self):
         self.assertEqual(generate_schema(t.tuple(t.int, t.float)), "[number, number]")
-        
+
 
 if __name__ == "__main__":
     unittest.main()

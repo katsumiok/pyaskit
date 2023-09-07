@@ -23,12 +23,14 @@ def make_example_code(function_name: str, examples: ExampleType):
     return code
 
 
-def make_parameter(variable: str, param_types: Union[Dict[str, t.Type], None], printer: TypePrinter):
+def make_parameter(
+    variable: str, param_types: Union[Dict[str, t.Type], None], printer: TypePrinter
+):
     if param_types is None or variable not in param_types:
         return variable
     else:
         return f"{variable}: {param_types[variable].accept(printer)}"
-    
+
 
 def make_coding_prompt(
     return_type: t.Type,
@@ -39,7 +41,9 @@ def make_coding_prompt(
     training_examples: ExampleType = [],
 ):
     printer = TypePrinter()
-    param_list = ", ".join([make_parameter(variable, param_types, printer) for variable in variables])
+    param_list = ", ".join(
+        [make_parameter(variable, param_types, printer) for variable in variables]
+    )
     return_type_str = return_type.accept(printer)
     type_defs = "|n".join(printer.type_defs)
     import_stmt = (

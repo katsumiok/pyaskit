@@ -77,7 +77,7 @@ def make_example_chat_messages(task, examples: ExampleType):
 def parse_code(text: str, return_type):
     # extract ```python...``` from text
     #     json_text = text
-    pattern = r'```\w+\n(.*?)\n```'
+    pattern = r"```\w+\n(.*?)\n```"
     python_code = re.findall(pattern, text, re.DOTALL)
     if len(python_code) > 0:
         return python_code[0]
@@ -86,8 +86,8 @@ def parse_code(text: str, return_type):
 
 def parse(text: str, return_type):
     if isinstance(return_type, t.CodeType):
-        #print("parse_code")
-        #print(text)
+        # print("parse_code")
+        # print(text)
         return parse_code(text, return_type), ""
     data = extract_json(text)
     if data is None:
@@ -126,7 +126,7 @@ def ask_and_parse(return_type, messages):
     for _ in range(10):
         completion = chat_with_retry(
             config.get_model(),
-#            "gpt-4",
+            #            "gpt-4",
             messages,
         )
         content = completion.choices[0].message.content
@@ -149,7 +149,7 @@ def make_retry_message(return_type):
     if isinstance(return_type, t.CodeType):
         return f"Generates code in {return_type.language} enclosed with ```{return_type.language} and ```"
     else:
-        s = '''Generates responses again in JSON format enclosed with ```json and ``` like:
+        s = """Generates responses again in JSON format enclosed with ```json and ``` like:
 ```json
 { "reason": "Reason for the answer", "answer": "Final answer or result" }
 ```
@@ -157,12 +157,18 @@ The response in the JSON code block should be given in the type defined as follo
 ```ts
 { reason: string; answer: {{type}} }
 ```
-'''.replace("{{type}}", generate_schema(return_type))
+""".replace(
+            "{{type}}", generate_schema(return_type)
+        )
         return s
 
 
 def make_messages(task, return_type, varMap, training_examples):
-    system = make_system_message(return_type) if not isinstance(return_type, t.CodeType) else make_system_message_for_code(return_type)
+    system = (
+        make_system_message(return_type)
+        if not isinstance(return_type, t.CodeType)
+        else make_system_message_for_code(return_type)
+    )
     question = make_question(task, varMap)
     example_messages = make_example_chat_messages(task, training_examples)
     messages = [
@@ -192,7 +198,9 @@ The response in the JSON code block should be given in the type defined as follo
 ```
 Explain your answer step-by-step in the 'reason' field."""
     if isinstance(return_type, t.StringType):
-        system_template += "\nNo additional text should be part of the value in the 'answer' field."
+        system_template += (
+            "\nNo additional text should be part of the value in the 'answer' field."
+        )
 
     type = generate_schema(return_type)
     # Use replace instead of re.sub because of the following error when handling unicode characters:
@@ -212,11 +220,10 @@ Let's think step-by-step!
     return system_template.replace("{{language}}", return_type.language)
 
 
-
 def make_question(task: str, varMap: dict):
     # print("make_question: ", task)
     question = task + "\n\n"
     if len(varMap) == 0:
         return question
     var_list = [f"  '{key}' = {json.dumps(varMap[key])}" for key in varMap]
-    return question + "where\n" + '\n'.join(var_list)
+    return question + "where\n" + "\n".join(var_list)

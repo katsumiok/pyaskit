@@ -3,14 +3,13 @@ import pyaskit.types as t
 
 
 class TestTypeVisitor(unittest.TestCase):
-    
     def setUp(self):
         self.visitor = t.types.TypeVisitor()
-    
+
     def test_visit_literal_raises_error(self):
         with self.assertRaises(NotImplementedError):
             self.visitor.visit_literal(None)
-    
+
     def test_visit_dict_raises_error(self):
         with self.assertRaises(NotImplementedError):
             self.visitor.visit_dict(None)
@@ -22,7 +21,7 @@ class TestTypeVisitor(unittest.TestCase):
     def test_visit_float_raises_error(self):
         with self.assertRaises(NotImplementedError):
             self.visitor.visit_float(None)
-    
+
     def test_visit_string_raises_error(self):
         with self.assertRaises(NotImplementedError):
             self.visitor.visit_string(None)
@@ -30,11 +29,11 @@ class TestTypeVisitor(unittest.TestCase):
     def test_visit_bool_raises_error(self):
         with self.assertRaises(NotImplementedError):
             self.visitor.visit_bool(None)
-    
+
     def test_visit_list_raises_error(self):
         with self.assertRaises(NotImplementedError):
             self.visitor.visit_list(None)
-    
+
     def test_visit_union_raises_error(self):
         with self.assertRaises(NotImplementedError):
             self.visitor.visit_union(None)
@@ -42,34 +41,29 @@ class TestTypeVisitor(unittest.TestCase):
     def test_visit_tuple_raises_error(self):
         with self.assertRaises(NotImplementedError):
             self.visitor.visit_tuple(None)
-    
+
     def test_visit_code_raises_error(self):
         with self.assertRaises(NotImplementedError):
             self.visitor.visit_code(None)
 
 
-
 class TestType(unittest.TestCase):
-    
     def test_validate_raises_error(self):
         with self.assertRaises(NotImplementedError):
             t.types.Type().validate(None)
-
 
     def test_accept_raises_error(self):
         with self.assertRaises(NotImplementedError):
             t.types.Type().accept(None)
 
-    
     def test_int(self):
         self.assertTrue(t.int.validate(5))
         self.assertFalse(t.int.validate("5"))
-        
+
     def test_float(self):
         self.assertTrue(t.float.validate(5))
         self.assertTrue(t.float.validate(5.5))
         self.assertFalse(t.int.validate("5"))
-
 
     def test_bool(self):
         self.assertTrue(t.bool.validate(True))
@@ -78,7 +72,7 @@ class TestType(unittest.TestCase):
     def test_string(self):
         self.assertTrue(t.str.validate("5"))
         self.assertFalse(t.str.validate(5))
-        
+
     def test_code(self):
         self.assertTrue(t.code("python").validate("5"))
         self.assertFalse(t.code("python").validate(5))
@@ -100,7 +94,7 @@ class TestType(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.assertFalse(t.dict({"a": 1}))
         with self.assertRaises(TypeError):
-            self.assertFalse(t.dict({1: t.int}))    
+            self.assertFalse(t.dict({1: t.int}))
 
     def test_literal(self):
         self.assertTrue(t.literal(5).validate(5))
@@ -116,7 +110,7 @@ class TestType(unittest.TestCase):
         self.assertFalse((t.literal("yes", "no")).validate("maybe"))
         with self.assertRaises(TypeError):
             self.assertFalse((t.literal("yes") | "no"))
-            
+
     def test_tuple(self):
         self.assertTrue(t.tuple(t.int, t.str).validate([1, "hello"]))
         self.assertFalse(t.tuple(t.int, t.str).validate([1, 2]))

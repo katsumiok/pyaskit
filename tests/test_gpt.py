@@ -7,7 +7,18 @@ import random
 import pyaskit.gpt as gpt
 import pyaskit
 import pyaskit.types as t
-from pyaskit.gpt import chat_with_retry, make_question, make_answer, make_example_chat_messages, make_qa, parse_code, parse, ask_and_parse, config
+from pyaskit.gpt import (
+    chat_with_retry,
+    make_question,
+    make_answer,
+    make_example_chat_messages,
+    make_qa,
+    parse_code,
+    parse,
+    ask_and_parse,
+    config,
+)
+
 
 class TestGPT(unittest.TestCase):
     def test_extract_json(self):
@@ -17,7 +28,7 @@ class TestGPT(unittest.TestCase):
         # expect raise
         with self.assertRaises(ValueError):
             gpt.extract_json("...```json 1 ```...```")
-            
+
 
 class TestChatWithRetry(unittest.TestCase):
     @patch("openai.ChatCompletion.create")
@@ -25,9 +36,11 @@ class TestChatWithRetry(unittest.TestCase):
         mock_create.return_value = "mock_response"
 
         response = chat_with_retry("test_model", "test_messages")
-        
+
         self.assertEqual(response, "mock_response")
-        mock_create.assert_called_once_with(model="test_model", messages="test_messages")
+        mock_create.assert_called_once_with(
+            model="test_model", messages="test_messages"
+        )
 
     @patch("openai.ChatCompletion.create")
     def test_success_on_second_try(self, mock_create):
@@ -46,11 +59,12 @@ class TestChatWithRetry(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             chat_with_retry("test_model", "test_messages", 2)
 
-        self.assertEqual(str(context.exception), "Failed to get response after 2 attempts")
+        self.assertEqual(
+            str(context.exception), "Failed to get response after 2 attempts"
+        )
 
 
 class TestMakeQuestion(unittest.TestCase):
-
     def test_with_empty_varMap(self):
         task = "What is the capital of France?"
         varMap = {}
@@ -66,11 +80,10 @@ class TestMakeQuestion(unittest.TestCase):
     def test_with_non_empty_varMap_multiple_items(self):
         task = "Calculate the total price."
         varMap = {"price": 50.5, "quantity": 3}
-        # Note: Dictionary ordering is maintained from Python 3.7 onwards. 
+        # Note: Dictionary ordering is maintained from Python 3.7 onwards.
         # If you're using <3.7, this test might be inconsistent.
         expected_output = (
-            "Calculate the total price.\n\n"
-            "where\n  'price' = 50.5\n  'quantity' = 3"
+            "Calculate the total price.\n\n" "where\n  'price' = 50.5\n  'quantity' = 3"
         )
         self.assertEqual(make_question(task, varMap), expected_output)
 
@@ -78,13 +91,12 @@ class TestMakeQuestion(unittest.TestCase):
         task = "Print the message."
         varMap = {"message": "Hello, world!"}
         expected_output = (
-            "Print the message.\n\n"
-            "where\n  'message' = \"Hello, world!\""
+            "Print the message.\n\n" "where\n  'message' = \"Hello, world!\""
         )
         self.assertEqual(make_question(task, varMap), expected_output)
 
-class TestMakeAnswer(unittest.TestCase):
 
+class TestMakeAnswer(unittest.TestCase):
     def test_make_answer_with_string(self):
         output = "Hello, World!"
         expected_response = f"""```json
@@ -134,11 +146,9 @@ class TestMakeAnswer(unittest.TestCase):
 }}
 ```"""
         self.assertEqual(make_answer(output), expected_response)
-        
 
 
 class TestMakeExampleChatMessages(unittest.TestCase):
-
     @patch("pyaskit.gpt.make_qa")
     def test_make_example_chat_messages(self, mock_make_qa):
         # Mocking the make_qa function to return a fixed output
@@ -147,25 +157,28 @@ class TestMakeExampleChatMessages(unittest.TestCase):
         task = "mock_task"
         examples = [
             {"input": "input1", "output": "output1"},
-            {"input": "input2", "output": "output2"}
+            {"input": "input2", "output": "output2"},
         ]
-        
+
         result = make_example_chat_messages(task, examples)
 
         expected_result = [
             {"role": "user", "content": "mock_question"},
             {"role": "assistant", "content": "mock_answer"},
             {"role": "user", "content": "mock_question"},
-            {"role": "assistant", "content": "mock_answer"}
+            {"role": "assistant", "content": "mock_answer"},
         ]
 
         self.assertEqual(result, expected_result)
 
 
 class TestMakeQA(unittest.TestCase):
-    
-    @patch("pyaskit.gpt.make_question")  # Replace 'your_module_name' with the name of your module.
-    @patch("pyaskit.gpt.make_answer")    # Replace 'your_module_name' with the name of your module.
+    @patch(
+        "pyaskit.gpt.make_question"
+    )  # Replace 'your_module_name' with the name of your module.
+    @patch(
+        "pyaskit.gpt.make_answer"
+    )  # Replace 'your_module_name' with the name of your module.
     def test_make_qa(self, mock_make_answer, mock_make_question):
         # Setup mock returns
         mock_make_question.return_value = "mocked_question"
@@ -183,7 +196,7 @@ class TestMakeQA(unittest.TestCase):
 
         mock_make_question.assert_called_once_with(task, example["input"])
         mock_make_answer.assert_called_once_with(example["output"])
-        
+
 
 class TestParseCode(unittest.TestCase):
     def test_valid_python_code_extraction(self):
@@ -210,61 +223,60 @@ Some text.
 
 
 class TestParseFunction(unittest.TestCase):
-
     # Test successful parsing for CodeType
     def test_parse_code_success(self):
-        text = '''```python
+        text = """```python
 print("Hello, world!")
-```'''
+```"""
         return_type = t.CodeType("python")
         result, _ = parse(text, return_type)
         self.assertEqual(result, 'print("Hello, world!")')
-    
+
     # Test failure due to missing code block for CodeType
     def test_parse_code_failure(self):
         text = 'print("Hello, world!")'
         return_type = t.CodeType("python")
         with self.assertRaises(ValueError):
             parse(text, return_type)
-    
+
     # Test successful parsing for JSON data
     def test_parse_json_success(self):
-        text = '''```json
+        text = """```json
 {
     "reason": "Test Reason",
     "answer": "Hello, world!"
 }
-```'''
+```"""
         return_type = t.StringType()
         data, reason = parse(text, return_type)
         self.assertEqual(data, "Hello, world!")
         self.assertEqual(reason, "Test Reason")
-    
+
     # Test JSON parsing failure due to missing `answer` field
     def test_parse_json_missing_answer(self):
-        text = '''```json
+        text = """```json
 {
     "reason": "Test Reason"
 }
-```'''
+```"""
         return_type = t.StringType()
         with self.assertRaises(ValueError):
             parse(text, return_type)
 
     # Test JSON parsing failure due to wrong type in `answer` field
     def test_parse_json_wrong_type(self):
-        text = '''```json
+        text = """```json
 {
     "reason": "Test Reason",
     "answer": 1234
 }
-```'''
+```"""
         return_type = t.StringType()
         with self.assertRaises(ValueError):
             parse(text, return_type)
 
-class TestAskAndParse(unittest.TestCase):
 
+class TestAskAndParse(unittest.TestCase):
     # Mock the openai.ChatCompletion.create response
     mock_response = Mock()
     mock_response.choices = [Mock()]
@@ -274,14 +286,13 @@ class TestAskAndParse(unittest.TestCase):
     @patch("pyaskit.gpt.parse", return_value=("parsed_answer", "parsed_reason"))
     def test_successful_chat(self, mock_parse, mock_chat_with_retry):
         self.mock_response.choices[0].message.content = "mock_content"
-        
+
         data, reason, errors, completion = ask_and_parse(None, [])
 
         self.assertEqual(data, "parsed_answer")
         self.assertEqual(reason, "parsed_reason")
         self.assertEqual(errors, [])
         mock_parse.assert_called_once_with("mock_content", None)
-
 
 
 # More test cases can be added

@@ -7,7 +7,7 @@ def generate_schema(type) -> str:
     if isinstance(type, t.IntType):
         return "number"
     if isinstance(type, t.FloatType):
-        return "number"    
+        return "number"
     elif isinstance(type, t.BoolType):
         return "boolean"
     elif isinstance(type, t.StringType):
@@ -33,6 +33,6 @@ def generate_schema(type) -> str:
     elif isinstance(type, t.RecordType):
         k = generate_schema(type.key_type)
         v = generate_schema(type.value_type)
-        return f'{{[key: {k}]: {v}}}]'
+        return f"{{[key: {k}]: {v}}}]"
 
     raise TypeError(f"Unknown type: {type}")

@@ -53,7 +53,7 @@ class {type_name}(TypedDict):
     def visit_tuple(self, type):
         self.imports.add("Tuple")
         return f'Tuple[{", ".join([t.accept(self) for t in type.types])}]'
-    
+
     def visit_record(self, type):
         self.imports.add("Dict")
-        return f'Dict[{type.key_type.accept(self)}, {type.value_type.accept(self)}]'
+        return f"Dict[{type.key_type.accept(self)}, {type.value_type.accept(self)}]"

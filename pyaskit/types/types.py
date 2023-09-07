@@ -28,13 +28,12 @@ class TypeVisitor:
 
     def visit_tuple(self, type):
         raise NotImplementedError("visit_tuple method not implemented")
-    
+
     def visit_code(self, type):
         raise NotImplementedError("visit_code method not implemented")
-    
+
     def visit_record(self, type):
         raise NotImplementedError("visit_record method not implemented")
-    
 
 
 class Type:
@@ -47,15 +46,15 @@ class Type:
 
     def accept(self, visitor):
         raise NotImplementedError("accept method not implemented")
-   
-    
+
+
 class CodeType(Type):
     def __init__(self, language: str) -> None:
         self.language = language
-    
+
     def validate(self, value):
         return isinstance(value, builtins.str)
-    
+
     def accept(self, visitor):
         return visitor.visit_code(self)
 
@@ -215,18 +214,16 @@ class RecordType(Type):
     def __init__(self, key_type, value_type) -> None:
         self.key_type = key_type
         self.value_type = value_type
-    
+
     def validate(self, value):
         return isinstance(value, builtins.dict) and all(
             self.key_type.validate(key) and self.value_type.validate(value)
             for key, value in value.items()
         )
-    
+
     def accept(self, visitor):
         return visitor.visit_record(self)
 
-    
+
 def record(key_type, value_type):
     return RecordType(key_type, value_type)
-
-        

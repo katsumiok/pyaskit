@@ -41,7 +41,7 @@ class TestTypePrinter(unittest.TestCase):
             "Union[Literal['yes'], Literal['no']]",
         )
         self.assertEqual(printer.imports, {"Union", "Literal"})
-        
+
     def test_tuple(self):
         printer = TypePrinter()
         self.assertEqual(
@@ -49,12 +49,9 @@ class TestTypePrinter(unittest.TestCase):
             "Tuple[int, float]",
         )
         self.assertEqual(printer.imports, {"Tuple"})
-        
+
     def test_code(self):
         printer = TypePrinter()
-
-
-
 
 
 if __name__ == "__main__":

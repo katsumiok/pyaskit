@@ -20,7 +20,11 @@ module_path = os.path.join(os.getcwd(), "askit")
 
 class Function:
     def __init__(
-        self, return_type, param_types, template: str, training_examples: ExampleType = []
+        self,
+        return_type,
+        param_types,
+        template: str,
+        training_examples: ExampleType = [],
     ) -> None:
         if not isinstance(return_type, t.Type):
             raise ValueError("return_type must be a Type defined in py_askit.type")
@@ -47,19 +51,19 @@ class Function:
             self.training_examples,
         )
         return result
-    
+
     @property
     def reason(self):
         return self._reason
-    
+
     @property
     def errors(self):
         return self._errors
-    
+
     @property
     def completion(self):
         return self._completion
-    
+
     @property
     def recompilation_count(self):
         return self._recompilation_count
@@ -94,10 +98,14 @@ class Function:
                 self.training_examples,
             )
             # print("Prompt:", prompt)
-            code, self._recompilation_count = implement_body(function_name, prompt, test_examples)
+            code, self._recompilation_count = implement_body(
+                function_name, prompt, test_examples
+            )
             os.makedirs(module_path, exist_ok=True)
             with open(module_file_path, "w") as f:
-                f.write("# Recompilation count: " + str(self._recompilation_count) + "\n")
+                f.write(
+                    "# Recompilation count: " + str(self._recompilation_count) + "\n"
+                )
                 f.write(code)
         else:
             # logger.setLevel(logging.DEBUG)

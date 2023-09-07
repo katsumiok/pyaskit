@@ -1,5 +1,6 @@
 from typing import Union
-#from typing import Literal
+
+# from typing import Literal
 import pyaskit.types as t
 
 
@@ -12,10 +13,10 @@ def convert_type(x):
         return t.bool
     elif x == str:
         return t.str
-    #origin = get_origin(x)
-    #args = get_args(x)
-    origin = getattr(x, '__origin__', None)
-    args = getattr(x, '__args__', ())
+    # origin = get_origin(x)
+    # args = get_args(x)
+    origin = getattr(x, "__origin__", None)
+    args = getattr(x, "__args__", ())
     if origin is list:
         return t.list(convert_type(args[0]))
     elif origin is tuple:

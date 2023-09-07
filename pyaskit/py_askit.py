@@ -9,6 +9,7 @@ from .function import Function
 ReturnType = Union[t.Type, Dict, List, Tuple, str, int, float, bool]
 ParamType = ReturnType
 
+
 def set_module_path(new_path):
     """Set the path where modules will be generated."""
     global module_path
@@ -24,18 +25,30 @@ def define(return_type: ReturnType, template: str, training_examples: ExampleTyp
     return Function(return_type, None, template, training_examples)
 
 
-def defun(return_type: ReturnType, param_types: Dict[str, ParamType], template: str, training_examples: ExampleType = []):
+def defun(
+    return_type: ReturnType,
+    param_types: Dict[str, ParamType],
+    template: str,
+    training_examples: ExampleType = [],
+):
     return Function(return_type, param_types, template, training_examples)
 
 
-def define_hinted(return_type: ReturnType, template: str, training_examples: ExampleType = []):
+def define_hinted(
+    return_type: ReturnType, template: str, training_examples: ExampleType = []
+):
     x = convert_type(return_type)
     return Function(x, None, template, training_examples)
 
 
-def defun_hinted(return_type: ReturnType, param_types: Dict[str, ParamType], template: str, training_examples: ExampleType = []):
+def defun_hinted(
+    return_type: ReturnType,
+    param_types: Dict[str, ParamType],
+    template: str,
+    training_examples: ExampleType = [],
+):
     x = convert_type(return_type)
-    y  = {k: convert_type(v) for k, v in param_types.items()}
+    y = {k: convert_type(v) for k, v in param_types.items()}
     return Function(x, y, template, training_examples)
 
 
