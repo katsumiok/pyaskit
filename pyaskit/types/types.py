@@ -49,7 +49,7 @@ class Type:
 
 
 class CodeType(Type):
-    def __init__(self, language: str) -> None:
+    def __init__(self, language: builtins.str) -> None:
         self.language = language
 
     def validate(self, value):
@@ -59,7 +59,7 @@ class CodeType(Type):
         return visitor.visit_code(self)
 
 
-def code(language: str):
+def code(language: builtins.str):
     return CodeType(language)
 
 
