@@ -1,7 +1,7 @@
+from typing import List
 import os
 import importlib
 from . import types as t
-from .types.schema import generate_schema
 from .template import convert_template, extract_variables
 from .gpt import chat
 from .function_name import generate_unique_function_name
@@ -10,7 +10,7 @@ from .prompt import make_coding_prompt
 from .path import add_to_sys_path
 from .example import ExampleType, check_examples
 from .logging_config import setup_logger
-import logging
+
 
 logger = setup_logger(__name__)
 
@@ -35,7 +35,7 @@ class Function:
         check_examples(return_type, self.variables, training_examples)
         self.training_examples = training_examples
         self._reason = ""
-        self._errors = []
+        self._errors: List[str] = []
         self._completion = None
         self._recompilation_count = 0
 
