@@ -1,4 +1,4 @@
-from typing import List, Tuple, Type, Dict, Literal, get_origin, get_args, TypedDict, Union, Any, _GenericAlias, _SpecialForm
+from typing import List, Tuple, Type, Dict, Literal, get_origin, get_args, Union, Any, _GenericAlias, _SpecialForm
 import inspect
 import pyaskit.types as t
 
@@ -12,8 +12,6 @@ def convert_type(x):
         return t.bool
     elif x == str:
         return t.str
-    if inspect.isclass(x) and getattr(x, '__bases__', [])[0].__name__ == "dict":
-        return t.dict({k: convert_type(v) for k, v in x.__annotations__.items()})
     origin = get_origin(x)
     if origin is list:
         return t.list(convert_type(get_args(x)[0]))

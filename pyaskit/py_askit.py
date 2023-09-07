@@ -1,4 +1,4 @@
-from typing import Union, Dict, TypedDict, List, Tuple
+from typing import Union, Dict, List, Tuple
 from . import types as t
 from .types.converter import convert_type
 import time
@@ -6,7 +6,7 @@ from contextlib import contextmanager
 from .example import ExampleType
 from .function import Function
 
-ReturnType = Union[t.Type, Dict, TypedDict, List, Tuple, str, int, float, bool]
+ReturnType = Union[t.Type, Dict, List, Tuple, str, int, float, bool]
 ParamType = ReturnType
 
 def set_module_path(new_path):

@@ -42,12 +42,5 @@ class TestConvert(unittest.TestCase):
         self.assertTrue(convert_type(Literal["hello"]).validate("hello"))
         self.assertTrue(convert_type(Literal[True]).validate(True))
         
-    def test_TypedDict(self):
-        class Point2D(TypedDict):
-            x: int
-            y: int
-            label: str
-        self.assertTrue(convert_type(Point2D).validate({"x": 1, "y": 2, "label": "hello"}))
-
     def test_record(self):
         self.assertTrue(convert_type(Dict[str, int]).validate({"x": 1, "y": 2}))
