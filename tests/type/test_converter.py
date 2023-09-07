@@ -12,7 +12,7 @@ print(convert_type(Tuple[int, float]))
 print(convert_type(Union[int, float]))
 
 
-print(convert_type(Literal[5] | Literal[6]))
+print(convert_type(Union[Literal[5], Literal[6]]))
 
 
 class TestConvert(unittest.TestCase):
