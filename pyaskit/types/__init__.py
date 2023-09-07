@@ -9,6 +9,7 @@ from .types import (
     literal,
     union,
     code,
+    record,
     IntType,
     FloatType,
     StringType,
@@ -19,5 +20,6 @@ from .types import (
     LiteralType,
     UnionType,
     CodeType,
+    RecordType,
     Type,
 )

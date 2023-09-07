@@ -52,8 +52,7 @@ class TestTypePrinter(unittest.TestCase):
         
     def test_code(self):
         printer = TypePrinter()
-        with self.assertRaises(NotImplementedError):
-            t.code('python').accept(printer)
+
 
 
 

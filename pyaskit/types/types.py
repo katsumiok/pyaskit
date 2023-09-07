@@ -32,6 +32,9 @@ class TypeVisitor:
     def visit_code(self, type):
         raise NotImplementedError("visit_code method not implemented")
     
+    def visit_record(self, type):
+        raise NotImplementedError("visit_record method not implemented")
+    
 
 
 class Type:
@@ -172,6 +175,11 @@ class TupleType(Type):
         self.types = types
 
     def validate(self, value):
+        print(value)
+        print(isinstance(value, builtins.list))
+        print(self.types)
+        print(self.types[0].validate(value[0]))
+        print(self.types[1].validate(value[1]))
         return (
             isinstance(value, builtins.list)
             and len(value) == len(self.types)
@@ -201,3 +209,24 @@ class UnionType(Type):
 
 def union(*types):
     return UnionType(types)
+
+
+class RecordType(Type):
+    def __init__(self, key_type, value_type) -> None:
+        self.key_type = key_type
+        self.value_type = value_type
+    
+    def validate(self, value):
+        return isinstance(value, builtins.dict) and all(
+            self.key_type.validate(key) and self.value_type.validate(value)
+            for key, value in value.items()
+        )
+    
+    def accept(self, visitor):
+        return visitor.visit_record(self)
+
+    
+def record(key_type, value_type):
+    return RecordType(key_type, value_type)
+
+        
