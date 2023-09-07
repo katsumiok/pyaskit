@@ -1,18 +1,7 @@
 import unittest
-from typing import Tuple, Union, Literal, TypedDict, Dict
+from typing import Tuple, Union, List, Tuple, Dict
 import pyaskit.types as t
 from pyaskit.types.converter import convert_type
-
-
-
-print(convert_type(Tuple[int, float]))
-print(convert_type(Tuple[int, float]))
-
-
-print(convert_type(Union[int, float]))
-
-
-print(convert_type(Union[Literal[5], Literal[6]]))
 
 
 class TestConvert(unittest.TestCase):
@@ -29,18 +18,18 @@ class TestConvert(unittest.TestCase):
         self.assertEqual(convert_type(str), t.str)
         
     def test_list(self):
-        self.assertTrue(convert_type(list[int]).validate([1, 2, 3]))
+        self.assertTrue(convert_type(List[int]).validate([1, 2, 3]))
         
     def test_tuple(self):
-        self.assertTrue(convert_type(tuple[int, float]).validate([1, 2.0]))
+        self.assertTrue(convert_type(Tuple[int, float]).validate([1, 2.0]))
         
     def test_union(self):
         self.assertTrue(convert_type(Union[int, str]).validate("hello"))
 
-    def test_literal(self):
-        self.assertTrue(convert_type(Literal[5]).validate(5))
-        self.assertTrue(convert_type(Literal["hello"]).validate("hello"))
-        self.assertTrue(convert_type(Literal[True]).validate(True))
+    # def test_literal(self):
+    #     self.assertTrue(convert_type(Literal[5]).validate(5))
+    #     self.assertTrue(convert_type(Literal["hello"]).validate("hello"))
+    #     self.assertTrue(convert_type(Literal[True]).validate(True))
         
     def test_record(self):
         self.assertTrue(convert_type(Dict[str, int]).validate({"x": 1, "y": 2}))

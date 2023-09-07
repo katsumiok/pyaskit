@@ -1,5 +1,5 @@
-from typing import List, Tuple, Type, Dict, Literal, get_origin, get_args, Union, Any, _GenericAlias, _SpecialForm
-import inspect
+from typing import get_origin, get_args, Union
+#from typing import Literal
 import pyaskit.types as t
 
 
@@ -20,8 +20,8 @@ def convert_type(x):
     elif origin is Union:
         args = get_args(x)
         return t.union(*[convert_type(arg) for arg in args])
-    elif origin is Literal:
-        return t.literal(*get_args(x))
+    # elif origin is Literal:
+    #     return t.literal(*get_args(x))
     elif origin is dict:
         return t.record(convert_type(get_args(x)[0]), convert_type(get_args(x)[1]))
     return x
