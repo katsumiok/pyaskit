@@ -5,6 +5,9 @@ on:
     tags:
       - "*"
 
+env:
+  MY_SECRET_ENV_VARIABLE: ${{ secrets.MY_SECRET_NAME }}
+
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
