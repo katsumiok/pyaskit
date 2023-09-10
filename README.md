@@ -48,7 +48,7 @@ or
 pip install git+https://github.com/katsumiok/pyaskit.git
 ```
 
-Before using *AskIt*, you need to set your OpenAI API key as an environment variable `OPENAI_API_KEY` and `ASKIT_MODEL`:
+Before using *AskIt*, you need to set your OpenAI API key as an environment variable `OPENAI_API_KEY`:
 ```bash
 export OPENAI_API_KEY=<your OpenAI API key>
 ```
