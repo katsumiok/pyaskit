@@ -10,6 +10,7 @@ from .prompt import make_coding_prompt
 from .path import add_to_sys_path
 from .example import ExampleType, check_examples
 from .logging_config import setup_logger
+from .llm_openai import chat_with_retry
 
 
 logger = setup_logger(__name__)
@@ -49,6 +50,7 @@ class Function:
             variableMap,
             self.return_type,
             self.training_examples,
+            chat_with_retry,
         )
         return result
 
@@ -99,7 +101,7 @@ class Function:
             )
             # print("Prompt:", prompt)
             code, self._recompilation_count = implement_body(
-                function_name, prompt, test_examples
+                function_name, prompt, chat_with_retry, test_examples
             )
             os.makedirs(module_path, exist_ok=True)
             with open(module_file_path, "w") as f:

@@ -1,15 +1,9 @@
-import os
 import json
 import re
-import time
-import random
-import openai
 from .types.schema import generate_schema
 from .example import ExampleType
 import pyaskit.types as t
 from . import config
-
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 def extract_json(text: str):
@@ -22,30 +16,6 @@ def extract_json(text: str):
         return json.loads(json_text)
     except Exception as e:
         raise ValueError(f"Failed to parse JSON: {e}")
-
-
-def chat_with_retry(model, messages, max_retries=10):
-    base_wait_time = 1  # wait time in seconds
-    for i in range(max_retries):
-        try:
-            response = openai.ChatCompletion.create(
-                model=model,
-                messages=messages,
-            )
-            return response
-        except (
-            openai.error.APIError,
-            openai.error.Timeout,
-            openai.error.APIConnectionError,
-            openai.error.RateLimitError,
-            openai.error.ServiceUnavailableError,
-        ):
-            # https://platform.openai.com/docs/guides/error-codes/python-library-error-types
-            wait_time = base_wait_time * 2**i
-            wait_time = min(wait_time, 30)
-            jitter = wait_time / 2
-            time.sleep(wait_time + random.uniform(-jitter, jitter))
-    raise Exception(f"Failed to get response after {max_retries} attempts")
 
 
 def make_qa(task, example):
@@ -109,17 +79,23 @@ def parse(text: str, return_type):
     return data["answer"], data["reason"] if "reason" in data else ""
 
 
-def chat(task: str, var_map: dict, return_type, training_examples: ExampleType):
+def chat(
+    task: str,
+    var_map: dict,
+    return_type,
+    training_examples: ExampleType,
+    chat_with_retry,
+):
     messages = make_messages(task, return_type, var_map, training_examples)
-    return ask_and_parse(return_type, messages)
+    return ask_and_parse(return_type, messages, chat_with_retry)
 
 
-def chat_raw(return_type, messages):
+def chat_raw(return_type, messages, chat_with_retry):
     merged_messages = merge_messages(messages, return_type)
-    return ask_and_parse(return_type, merged_messages)
+    return ask_and_parse(return_type, merged_messages, chat_with_retry)
 
 
-def ask_and_parse(return_type, messages):
+def ask_and_parse(return_type, messages, chat_with_retry):
     retry = False
     errors = []
 

@@ -4,7 +4,6 @@ import importlib
 import tempfile
 from timeout_decorator import timeout, TimeoutError
 from .example import ExampleType
-from .gpt import chat_with_retry
 from .logging_config import setup_logger
 from .path import add_to_sys_path
 from . import config
@@ -97,6 +96,7 @@ def add(x, y) -> int:
 def implement_body(
     function_name: str,
     skeleton: str,
+    chat_with_retry,
     test_examples: ExampleType = [],
 ):
     # print("skelton:", skeleton)

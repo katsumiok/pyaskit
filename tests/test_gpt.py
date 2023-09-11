@@ -8,7 +8,6 @@ import pyaskit.gpt as gpt
 import pyaskit
 import pyaskit.types as t
 from pyaskit.gpt import (
-    chat_with_retry,
     make_question,
     make_answer,
     make_example_chat_messages,
@@ -28,40 +27,6 @@ class TestGPT(unittest.TestCase):
         # expect raise
         with self.assertRaises(ValueError):
             gpt.extract_json("...```json 1 ```...```")
-
-
-class TestChatWithRetry(unittest.TestCase):
-    @patch("openai.ChatCompletion.create")
-    def test_success_on_first_try(self, mock_create):
-        mock_create.return_value = "mock_response"
-
-        response = chat_with_retry("test_model", "test_messages")
-
-        self.assertEqual(response, "mock_response")
-        mock_create.assert_called_once_with(
-            model="test_model", messages="test_messages"
-        )
-
-    @patch("openai.ChatCompletion.create")
-    def test_success_on_second_try(self, mock_create):
-        # Setup mock to raise an exception on the first call and succeed on the second
-        mock_create.side_effect = [openai.error.APIError("test_error"), "mock_response"]
-
-        response = chat_with_retry("test_model", "test_messages")
-
-        self.assertEqual(response, "mock_response")
-        self.assertEqual(mock_create.call_count, 2)
-
-    @patch("openai.ChatCompletion.create")
-    def test_max_retries_exceeded(self, mock_create):
-        mock_create.side_effect = openai.error.APIError("test_error")
-
-        with self.assertRaises(Exception) as context:
-            chat_with_retry("test_model", "test_messages", 2)
-
-        self.assertEqual(
-            str(context.exception), "Failed to get response after 2 attempts"
-        )
 
 
 class TestMakeQuestion(unittest.TestCase):
@@ -282,12 +247,13 @@ class TestAskAndParse(unittest.TestCase):
     mock_response.choices = [Mock()]
     mock_response.choices[0].message = Mock()
 
-    @patch("pyaskit.gpt.chat_with_retry", return_value=mock_response)
     @patch("pyaskit.gpt.parse", return_value=("parsed_answer", "parsed_reason"))
-    def test_successful_chat(self, mock_parse, mock_chat_with_retry):
+    def test_successful_chat(self, mock_parse):
         self.mock_response.choices[0].message.content = "mock_content"
 
-        data, reason, errors, completion = ask_and_parse(None, [])
+        data, reason, errors, completion = ask_and_parse(
+            None, [], lambda x, y: self.mock_response
+        )
 
         self.assertEqual(data, "parsed_answer")
         self.assertEqual(reason, "parsed_reason")
