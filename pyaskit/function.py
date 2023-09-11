@@ -3,7 +3,7 @@ import os
 import importlib
 from . import types as t
 from .template import convert_template, extract_variables
-from .gpt import chat
+from .dialog import chat
 from .function_name import generate_unique_function_name
 from .code_generator import implement_body
 from .prompt import make_coding_prompt

@@ -4,10 +4,10 @@ from unittest.mock import patch, Mock
 import json
 import time
 import random
-import pyaskit.gpt as gpt
+import pyaskit.dialog as dialog
 import pyaskit
 import pyaskit.types as t
-from pyaskit.gpt import (
+from pyaskit.dialog import (
     make_question,
     make_answer,
     make_example_chat_messages,
@@ -21,12 +21,12 @@ from pyaskit.gpt import (
 
 class TestGPT(unittest.TestCase):
     def test_extract_json(self):
-        self.assertEqual(1, gpt.extract_json("...```json 1 ```..."))
-        data = gpt.extract_json('{ "reason": "ok"}')
+        self.assertEqual(1, dialog.extract_json("...```json 1 ```..."))
+        data = dialog.extract_json('{ "reason": "ok"}')
         self.assertEqual("ok", data["reason"])
         # expect raise
         with self.assertRaises(ValueError):
-            gpt.extract_json("...```json 1 ```...```")
+            dialog.extract_json("...```json 1 ```...```")
 
 
 class TestMakeQuestion(unittest.TestCase):
@@ -114,7 +114,7 @@ class TestMakeAnswer(unittest.TestCase):
 
 
 class TestMakeExampleChatMessages(unittest.TestCase):
-    @patch("pyaskit.gpt.make_qa")
+    @patch("pyaskit.dialog.make_qa")
     def test_make_example_chat_messages(self, mock_make_qa):
         # Mocking the make_qa function to return a fixed output
         mock_make_qa.return_value = ("mock_question", "mock_answer")
@@ -139,10 +139,10 @@ class TestMakeExampleChatMessages(unittest.TestCase):
 
 class TestMakeQA(unittest.TestCase):
     @patch(
-        "pyaskit.gpt.make_question"
+        "pyaskit.dialog.make_question"
     )  # Replace 'your_module_name' with the name of your module.
     @patch(
-        "pyaskit.gpt.make_answer"
+        "pyaskit.dialog.make_answer"
     )  # Replace 'your_module_name' with the name of your module.
     def test_make_qa(self, mock_make_answer, mock_make_question):
         # Setup mock returns
@@ -247,7 +247,7 @@ class TestAskAndParse(unittest.TestCase):
     mock_response.choices = [Mock()]
     mock_response.choices[0].message = Mock()
 
-    @patch("pyaskit.gpt.parse", return_value=("parsed_answer", "parsed_reason"))
+    @patch("pyaskit.dialog.parse", return_value=("parsed_answer", "parsed_reason"))
     def test_successful_chat(self, mock_parse):
         self.mock_response.choices[0].message.content = "mock_content"
 

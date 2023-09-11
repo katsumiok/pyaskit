@@ -4,5 +4,5 @@ from .py_askit import defun
 from .py_askit import define_hinted
 from .py_askit import defun_hinted
 from .py_askit import timer
-from .gpt import chat_raw
+from .dialog import chat_raw
 from .function_name import generate_unique_function_name
