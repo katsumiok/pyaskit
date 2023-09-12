@@ -2,6 +2,9 @@ name: Python CI
 
 on: [push, pull_request]
 
+env:
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
