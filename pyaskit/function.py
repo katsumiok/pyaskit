@@ -3,14 +3,13 @@ import os
 import importlib
 from . import types as t
 from .template import convert_template, extract_variables
-from .dialog import chat
+from .dialog import query
 from .function_name import generate_unique_function_name
 from .code_generator import implement_body
 from .prompt import make_coding_prompt
 from .path import add_to_sys_path
 from .example import ExampleType, check_examples
 from .logging_config import setup_logger
-from .llm_openai import chat_with_retry
 
 
 logger = setup_logger(__name__)
@@ -45,12 +44,11 @@ class Function:
         variableMap = {}
         self.check_args(args, kwargs, self.variables, variableMap)
 
-        result, self._reason, self._errors, self._completion = chat(
+        result, self._reason, self._errors, self._completion = query(
             converted_template,
             variableMap,
             self.return_type,
-            self.training_examples,
-            chat_with_retry,
+            self.training_examples
         )
         return result
 
@@ -101,7 +99,7 @@ class Function:
             )
             # print("Prompt:", prompt)
             code, self._recompilation_count = implement_body(
-                function_name, prompt, chat_with_retry, test_examples
+                function_name, prompt, test_examples
             )
             os.makedirs(module_path, exist_ok=True)
             with open(module_file_path, "w") as f:

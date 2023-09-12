@@ -6,7 +6,7 @@ from timeout_decorator import timeout, TimeoutError
 from .example import ExampleType
 from .logging_config import setup_logger
 from .path import add_to_sys_path
-from . import config
+from .core import chat
 
 
 logger = setup_logger(__name__)
@@ -96,7 +96,6 @@ def add(x, y) -> int:
 def implement_body(
     function_name: str,
     skeleton: str,
-    chat_with_retry,
     test_examples: ExampleType = [],
 ):
     # print("skelton:", skeleton)
@@ -104,8 +103,8 @@ def implement_body(
     # print(messages)
     test_failed_count = 0
     for i in range(10):
-        completion = chat_with_retry(model=config.get_model(), messages=messages)
-        code = extract_python_code(completion.choices[0].message.content)
+        content, completion = chat(messages=messages)
+        code = extract_python_code(content)
         func = validate_python_code(code, function_name)
         if func is None:
             continue
