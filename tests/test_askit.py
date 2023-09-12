@@ -7,7 +7,7 @@ class TestAskIt(unittest.TestCase):
     def test_ask(self):
         sum = ai.ask(t.int, "Add 1 + 2")
         self.assertEqual(type(sum), int)
-    
+
     def test_define_ok(self):
         valid_examples = [
             {"input": {"x": 1}, "output": 2},

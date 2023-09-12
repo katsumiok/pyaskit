@@ -11,7 +11,7 @@ from pyaskit.dialog import (
     parse_code,
     parse,
     ask_and_parse,
- )
+)
 
 
 class TestGPT(unittest.TestCase):
@@ -234,6 +234,7 @@ print("Hello, world!")
         return_type = t.StringType()
         with self.assertRaises(ValueError):
             parse(text, return_type)
+
 
 #
 # class TestAskAndParse(unittest.TestCase):

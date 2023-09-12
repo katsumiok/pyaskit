@@ -45,10 +45,7 @@ class Function:
         self.check_args(args, kwargs, self.variables, variableMap)
 
         result, self._reason, self._errors, self._completion = query(
-            converted_template,
-            variableMap,
-            self.return_type,
-            self.training_examples
+            converted_template, variableMap, self.return_type, self.training_examples
         )
         return result
 
