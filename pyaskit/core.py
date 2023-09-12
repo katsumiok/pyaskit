@@ -9,5 +9,5 @@ def set_chat_function(func):
     chat_function = func
 
 
-def chat(messages, max_retries=10):
-    return chat_function(messages, max_retries)
+def chat(messages):
+    return chat_function(messages)
