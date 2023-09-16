@@ -2,11 +2,13 @@ import os
 import time
 import random
 import openai
+from . import config
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-def chat_with_retry(model, messages, max_retries=10):
+def chat_with_retry(messages, max_retries=10):
+    model = config.get_model()
     base_wait_time = 1  # wait time in seconds
     for i in range(max_retries):
         try:
@@ -14,7 +16,7 @@ def chat_with_retry(model, messages, max_retries=10):
                 model=model,
                 messages=messages,
             )
-            return response
+            return response.choices[0].message.content, response
         except (
             openai.error.APIError,
             openai.error.Timeout,

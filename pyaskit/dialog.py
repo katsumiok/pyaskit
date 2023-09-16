@@ -3,7 +3,7 @@ import re
 from .types.schema import generate_schema
 from .example import ExampleType
 import pyaskit.types as t
-from . import config
+from .core import chat
 
 
 def extract_json(text: str):
@@ -79,33 +79,27 @@ def parse(text: str, return_type):
     return data["answer"], data["reason"] if "reason" in data else ""
 
 
-def chat(
+def query(
     task: str,
     var_map: dict,
     return_type,
     training_examples: ExampleType,
-    chat_with_retry,
 ):
     messages = make_messages(task, return_type, var_map, training_examples)
-    return ask_and_parse(return_type, messages, chat_with_retry)
+    return ask_and_parse(return_type, messages)
 
 
-def chat_raw(return_type, messages, chat_with_retry):
+def chat_raw(return_type, messages):
     merged_messages = merge_messages(messages, return_type)
-    return ask_and_parse(return_type, merged_messages, chat_with_retry)
+    return ask_and_parse(return_type, merged_messages)
 
 
-def ask_and_parse(return_type, messages, chat_with_retry):
+def ask_and_parse(return_type, messages):
     retry = False
     errors = []
 
     for _ in range(10):
-        completion = chat_with_retry(
-            config.get_model(),
-            #            "gpt-4",
-            messages,
-        )
-        content = completion.choices[0].message.content
+        content, completion = chat(messages)
         try:
             data, reason = parse(content, return_type)
             return data, reason, errors, completion
@@ -116,7 +110,7 @@ def ask_and_parse(return_type, messages, chat_with_retry):
             else:
                 s = make_retry_message(return_type)
                 messages.append({"role": "assistant", "content": content})
-                messages.append({"role": "system", "content": s})
+                messages.append({"role": "user", "content": s})
                 retry = True
             errors.append(str(e))
 

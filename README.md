@@ -17,7 +17,8 @@ Using *AskIt*, you can deploy LLMs for a multitude of tasks, such as:
 - Problem Solving: resolving mathematical problems.
 - Code Generation: creating new codes, and more.
 
-*AskIt* operates through the [OpenAI API](https://beta.openai.com/) for backend LLM functions. Besides Python, *AskIt* has also been implemented in TypeScript. You can access the TypeScript version, [ts-askit](https://github.com/katsumiok/ts-askit).
+*pyaskit* can use GPT or LLama2 as a backend.
+*pyaskit* operates through the [OpenAI API](https://beta.openai.com/) or [LLama2 API](https://github.com/facebookresearch/llama). Besides Python, *AskIt* has also been implemented in TypeScript. You can access the TypeScript version, [ts-askit](https://github.com/katsumiok/ts-askit).
 
 ## Key Features
 
@@ -48,6 +49,8 @@ or
 pip install git+https://github.com/katsumiok/pyaskit.git
 ```
 
+### Preparation for OpenAI API
+
 Before using *AskIt*, you need to set your OpenAI API key as an environment variable `OPENAI_API_KEY`:
 ```bash
 export OPENAI_API_KEY=<your OpenAI API key>
@@ -61,6 +64,25 @@ export ASKIT_MODEL=<model name>
 ```
 `<model name>` is the name of the model you want to use. 
 The latest AskIt is tested with `gpt-4` and `gpt-3.5-turbo-16k`. You can find the list of available models in the [OpenAI API documentation](https://platform.openai.com/docs/models).
+
+### Preparation for Llama 2 API (Experimental)
+
+Before using *AskIt* with Llama 2, you need to install it. To install Llama 2, run this command in your terminal:
+```bash
+pip install git+https://github.com/facebookresearch/llama.git
+```
+You also need to download the tokenizer model and the checkpoint of the model you want to use. Please refer to the Llama 2 documentation for further details.
+
+We provide an example of using *AskIt* with Llama 2 in the [examples](examples) directory.
+To run the example, run this command in your terminal:
+
+```shell
+torchrun --nproc_per_node 1 examples/use_llama2.py \
+    --ckpt_dir llama-2-7b-chat/ \
+    --tokenizer_path tokenizer.model \
+    --max_seq_len 512 --max_batch_size 6
+```
+
 ## Getting Started
 
 Here are some basic examples to help you familiarize yourself with *AskIt*:
