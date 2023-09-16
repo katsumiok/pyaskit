@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 
 setup(
     name="pyaskit",
-    version="1.1.0",
+    version="1.2.0",
     packages=find_packages(),
-    description="AskIt: Unified programming interface for programming with large language models (GPT-3.5, GPT-4)",
+    description="AskIt: Unified programming interface for programming with large language models (GPT-3.5, GPT-4, Llama 2)",
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
     author="Katsumi Okuda",
@@ -22,5 +22,5 @@ setup(
         "License :: OSI Approved :: MIT License",
     ],
     license="MIT",
-    keywords="openai,gpt,gpt-3,gpt-4,api,wrapper,framework,dsl,llm"
+    keywords="openai,gpt,gpt-3,gpt-4,llama,api,wrapper,framework,dsl,llm"
 )
