@@ -110,7 +110,7 @@ def ask_and_parse(return_type, messages):
             else:
                 s = make_retry_message(return_type)
                 messages.append({"role": "assistant", "content": content})
-                messages.append({"role": "system", "content": s})
+                messages.append({"role": "user", "content": s})
                 retry = True
             errors.append(str(e))
 
