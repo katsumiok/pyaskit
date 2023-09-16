@@ -25,9 +25,9 @@ def use_llama(
     max_gen_len: Optional[int] = None,
 ):
     warnings.warn("This function is experimental and may change in the future.", FutureWarning)
-    Llama = importlib.import_module("llama")
+    llama = importlib.import_module("llama")
     
-    generator = Llama.build(
+    generator = llama.Llama.build(
         ckpt_dir=ckpt_dir,
         tokenizer_path=tokenizer_path,
         max_seq_len=max_seq_len,
