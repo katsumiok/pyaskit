@@ -25,7 +25,7 @@ def use_llama(
     max_gen_len: Optional[int] = None,
 ):
     warnings.warn("This function is experimental and may change in the future.", FutureWarning)
-    Llama = importlib.import_module("Llama", package="llama")
+    Llama = importlib.import_module("llama")
     
     generator = Llama.build(
         ckpt_dir=ckpt_dir,
