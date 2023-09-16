@@ -1,9 +1,7 @@
-from pyaskit import ask, define
-import pyaskit
+from pyaskit import define, use_llama
 import pyaskit.types as t
 from typing import Optional
 import fire
-from llama import Llama
 
 
 def main(
@@ -15,24 +13,17 @@ def main(
     max_batch_size: int = 8,
     max_gen_len: Optional[int] = None,
 ):
-    generator = Llama.build(
-        ckpt_dir=ckpt_dir,
-        tokenizer_path=tokenizer_path,
-        max_seq_len=max_seq_len,
-        max_batch_size=max_batch_size,
+    use_llama(
+        ckpt_dir,
+        tokenizer_path,
+        temperature,
+        top_p,
+        max_seq_len,
+        max_batch_size,
+        max_gen_len,
     )
-
-    def chat(messages):
-        results = generator.chat_completion(
-            [messages],  # type: ignore
-            max_gen_len=max_gen_len,
-            temperature=temperature,
-            top_p=top_p,
-        )
-        return results[0]["generation"]["content"], results[0]
-
-    pyaskit.core.set_chat_function(chat)
-    sum = ask(t.int, "add 1 + 2")
+    add = define(t.int, "add {{x}} and {{y}}")
+    sum = add(-1, 2)
     print(sum)
 
 

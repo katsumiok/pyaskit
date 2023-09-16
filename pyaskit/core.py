@@ -5,6 +5,7 @@ import warnings
 
 chat_function = chat_with_retry
 
+
 def set_chat_function(func):
     """Allows the user to set a custom chat function."""
     global chat_function
@@ -24,9 +25,7 @@ def use_llama(
     max_batch_size: int = 8,
     max_gen_len: Optional[int] = None,
 ):
-    warnings.warn("This function is experimental and may change in the future.", FutureWarning)
     llama = importlib.import_module("llama")
-    
     generator = llama.Llama.build(
         ckpt_dir=ckpt_dir,
         tokenizer_path=tokenizer_path,
