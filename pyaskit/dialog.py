@@ -1,6 +1,6 @@
 import json
 import re
-from .types.schema import generate_schema
+from .types.schema import SchemaGenerator
 from .example import ExampleType
 import pyaskit.types as t
 from .core import chat
@@ -68,10 +68,12 @@ def parse(text: str, return_type):
         raise ValueError('JSON must contain "answer" field')
     format_is_ok = return_type.validate(data["answer"])
     if not format_is_ok:
-        schema = generate_schema(return_type)
+        schema, decls = generate_schema(return_type)
         raise ValueError(
             f"""The type of answer" field must be the following type:
 ```ts
+{decls}
+
 {schema}
 ```
 """
@@ -101,6 +103,7 @@ def ask_and_parse(return_type, messages):
     for _ in range(10):
         content, completion = chat(messages)
         try:
+            # print(content)
             data, reason = parse(content, return_type)
             return data, reason, errors, completion
         except ValueError as e:
@@ -115,20 +118,33 @@ def ask_and_parse(return_type, messages):
             errors.append(str(e))
 
 
+def generate_schema(return_type):
+    generator = SchemaGenerator()
+    schema = return_type.accept(generator)
+    decls = "\n".join(
+        [f"type {name} = {type}" for name, type in generator.type_defs.items()]
+    )
+    return schema, decls
+
+
 def make_retry_message(return_type):
     if isinstance(return_type, t.CodeType):
         return f"Generates code in {return_type.language} enclosed with ```{return_type.language} and ```"
     else:
+        schema, decls = generate_schema(return_type)
         s = """Generates responses again in JSON format enclosed with ```json and ``` like:
 ```json
 { "reason": "Reason for the answer", "answer": "Final answer or result" }
 ```
-The response in the JSON code block should be given in the type defined as follows:
+The type of response in the JSON code block should be the JsonType defined as follows:
 ```ts
-{ reason: string; answer: {{type}} }
+{{decls}}
+interface JsonType { reason: string; answer: {{type}} }
 ```
 """.replace(
-            "{{type}}", generate_schema(return_type)
+            "{{type}}", schema
+        ).replace(
+            "{{decls}}", decls
         )
         return s
 
@@ -162,9 +178,10 @@ def make_system_message(return_type):
 { "reason": "Step-by-step reason for the answer", "answer": "Final answer or result" }
 ```
 
-The response in the JSON code block should be given in the type defined as follows:
+The type of response in the JSON code block should be the JsonType defined as follows:
 ```ts
-{ reason: string; answer: {{type}} }
+{{decls}}
+type JsonType = { reason: string; answer: {{type}} }
 ```
 Explain your answer step-by-step in the 'reason' field."""
     if isinstance(return_type, t.StringType):
@@ -172,10 +189,10 @@ Explain your answer step-by-step in the 'reason' field."""
             "\nNo additional text should be part of the value in the 'answer' field."
         )
 
-    type = generate_schema(return_type)
+    type, decls = generate_schema(return_type)
     # Use replace instead of re.sub because of the following error when handling unicode characters:
     # bad escape \u at position 1
-    return system_template.replace("{{type}}", type)
+    return system_template.replace("{{type}}", type).replace("{{decls}}", decls)
 
 
 def make_system_message_for_code(return_type):

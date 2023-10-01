@@ -1,4 +1,5 @@
 import builtins
+import inspect
 
 
 class TypeVisitor:
@@ -34,6 +35,9 @@ class TypeVisitor:
 
     def visit_record(self, type):
         raise NotImplementedError("visit_record method not implemented")
+
+    def visit_ref(self, type):
+        raise NotImplementedError("visit_ref method not implemented")
 
 
 class Type:
@@ -227,3 +231,32 @@ class RecordType(Type):
 
 def record(key_type, value_type):
     return RecordType(key_type, value_type)
+
+
+class RefType(Type):
+    def __init__(self, locals, globals, name) -> None:
+        self.locals = locals
+        self.globals = globals
+        self.name = name
+
+    def access(self):
+        if self.name in self.locals:
+            return self.locals[self.name]
+        elif self.name in self.globals:
+            return self.globals[self.name]
+        else:
+            raise NameError(f"Name {self.name} is not defined")
+
+    def validate(self, value):
+        return self.access().validate(value)
+
+    def accept(self, visitor):
+        return visitor.visit_ref(self)
+
+
+def ref(name):
+    return RefType(
+        inspect.currentframe().f_back.f_locals,
+        inspect.currentframe().f_back.f_globals,
+        name,
+    )

@@ -1,6 +1,6 @@
 import unittest
 import pyaskit.types as t
-from pyaskit.types.schema import generate_schema
+from pyaskit.types.schema import generate_schema, SchemaGenerator
 
 
 class TestGenerateSchema(unittest.TestCase):
@@ -26,7 +26,7 @@ class TestGenerateSchema(unittest.TestCase):
         )
 
     def test_unknown_type(self):
-        with self.assertRaises(TypeError):
+        with self.assertRaises(AttributeError):
             generate_schema(None)
 
     def test_literal(self):
@@ -41,6 +41,14 @@ class TestGenerateSchema(unittest.TestCase):
 
     def test_tuple(self):
         self.assertEqual(generate_schema(t.tuple(t.int, t.float)), "[number, number]")
+
+    def test_ref(self):
+        generator = SchemaGenerator()
+        Tree = t.dict({"name": t.str, "children": t.list(t.ref("Tree"))})
+        self.assertEqual(t.ref("Tree").accept(generator), "Tree")
+        self.assertEqual(
+            generator.type_defs, {"Tree": "{ name: string; children: Array(Tree) }"}
+        )
 
 
 if __name__ == "__main__":

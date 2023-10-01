@@ -57,3 +57,6 @@ class {type_name}(TypedDict):
     def visit_record(self, type):
         self.imports.add("Dict")
         return f"Dict[{type.key_type.accept(self)}, {type.value_type.accept(self)}]"
+
+    def visit_ref(self, type):
+        return type.name
