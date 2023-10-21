@@ -178,13 +178,8 @@ class TupleType(Type):
         self.types = types
 
     def validate(self, value):
-        print(value)
-        print(isinstance(value, builtins.list))
-        print(self.types)
-        print(self.types[0].validate(value[0]))
-        print(self.types[1].validate(value[1]))
         return (
-            isinstance(value, builtins.list)
+            (isinstance(value, builtins.list) or isinstance(value, builtins.tuple))
             and len(value) == len(self.types)
             and all(type.validate(item) for item, type in zip(value, self.types))
         )
