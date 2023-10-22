@@ -38,6 +38,9 @@ class TypeVisitor:
 
     def visit_ref(self, type):
         raise NotImplementedError("visit_ref method not implemented")
+    
+    def visit_none(self, type):
+        raise NotImplementedError("visit_none method not implemented")
 
 
 class Type:
@@ -50,6 +53,17 @@ class Type:
 
     def accept(self, visitor):
         raise NotImplementedError("accept method not implemented")
+
+
+class NoneType(Type):
+    def validate(self, value):
+        return value is None
+
+    def accept(self, visitor):
+        return visitor.visit_none(self)
+
+
+none = NoneType()
 
 
 class CodeType(Type):

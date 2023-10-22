@@ -11,6 +11,7 @@ from .types import (
     code,
     record,
     ref,
+    none,
     IntType,
     FloatType,
     StringType,
@@ -22,5 +23,6 @@ from .types import (
     UnionType,
     CodeType,
     RecordType,
+    NoneType,
     Type,
 )

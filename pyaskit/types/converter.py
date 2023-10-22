@@ -27,4 +27,6 @@ def convert_type(x):
     #     return t.literal(*get_args(x))
     elif origin is dict:
         return t.record(convert_type(args[0]), convert_type(args[1]))
+    elif origin is None:
+        return t.none
     return x
