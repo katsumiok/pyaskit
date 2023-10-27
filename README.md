@@ -211,6 +211,7 @@ The following table describes the various types supported by *AskIt*:
 | `union` | Union (Multiple Possible Values) | `t.union(t.literal('yes'), t.literal('no'))` | "yes" or "no" |
 |         |                                  | `t.literal('yes') \| t.literal('no')` | "yes" or "no" |
 |         |                                  | `t.literal('yes', 'no')` | "yes" or "no" |
+| `None`  | None                             | `None` | None |
 
 
 Note that each type declaration aids *AskIt* in parsing and understanding the desired output, ensuring your LLM returns data in the precise format you require.
