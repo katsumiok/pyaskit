@@ -18,11 +18,11 @@ def chat_with_retry(messages, max_retries=10):
             )
             return response.choices[0].message.content, response
         except (
-            openai.error.APIError,
-            openai.error.Timeout,
-            openai.error.APIConnectionError,
-            openai.error.RateLimitError,
-            openai.error.ServiceUnavailableError,
+            getattr(openai, "error", openai).APIError,
+            getattr(openai, "error", openai).Timeout,
+            getattr(openai, "error", openai).APIConnectionError,
+            getattr(openai, "error", openai).RateLimitError,
+            getattr(openai, "error", openai).ServiceUnavailableError,
         ):
             # https://platform.openai.com/docs/guides/error-codes/python-library-error-types
             wait_time = base_wait_time * 2**i
