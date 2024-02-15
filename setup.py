@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pyaskit",
-    version="1.2.3",
+    version="1.2.4",
     packages=find_packages(),
     description="AskIt: Unified programming interface for programming with large language models (GPT-3.5, GPT-4, Llama 2)",
     long_description=open("README.md").read(),
@@ -12,7 +12,7 @@ setup(
     url="https://github.com/katsumiok/pyaskit",
     python_requires=">=3.7",
     install_requires=[
-        "openai>=1.3.3",
+        "openai>=1.12.0",
         "unidecode",
         "timeout-decorator",
     ],
