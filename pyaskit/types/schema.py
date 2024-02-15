@@ -52,7 +52,7 @@ class SchemaGenerator(t.TypeVisitor):
             self.type_defs[type.name] = None
             self.type_defs[type.name] = type.access().accept(self)
         return type.name
-    
+
     def visit_none(self, type):
         return "null"
 

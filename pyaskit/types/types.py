@@ -38,7 +38,7 @@ class TypeVisitor:
 
     def visit_ref(self, type):
         raise NotImplementedError("visit_ref method not implemented")
-    
+
     def visit_none(self, type):
         raise NotImplementedError("visit_none method not implemented")
 

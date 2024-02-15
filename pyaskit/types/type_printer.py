@@ -60,6 +60,6 @@ class {type_name}(TypedDict):
 
     def visit_ref(self, type):
         return type.name
-    
+
     def visit_none(self, type):
         return "None"
