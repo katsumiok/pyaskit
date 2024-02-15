@@ -82,11 +82,7 @@ def parse(text: str, return_type):
 
 
 def query(
-    task: str,
-    var_map: dict,
-    return_type,
-    training_examples: ExampleType,
-    validator
+    task: str, var_map: dict, return_type, training_examples: ExampleType, validator
 ):
     messages = make_messages(task, return_type, var_map, training_examples)
     data, reason, errors, completion = ask_and_parse(return_type, messages)
@@ -97,7 +93,12 @@ def query(
             break
         new_messages = messages.copy()
         new_messages.append({"role": "assistant", "content": make_answer(data)})
-        new_messages.append({"role": "user", "content": f"Correct the answer in JSON again to solve the following error: {validator.feedback}\nProvide the whole answer."})
+        new_messages.append(
+            {
+                "role": "user",
+                "content": f"Correct the answer in JSON again to solve the following error: {validator.feedback}\nProvide the whole answer.",
+            }
+        )
         data, reason, errors, completion = ask_and_parse(return_type, new_messages)
     return data, reason, errors, completion
 
