@@ -86,9 +86,20 @@ def query(
     var_map: dict,
     return_type,
     training_examples: ExampleType,
+    validator
 ):
     messages = make_messages(task, return_type, var_map, training_examples)
-    return ask_and_parse(return_type, messages)
+    data, reason, errors, completion = ask_and_parse(return_type, messages)
+    for _ in range(10):
+        if validator is None:
+            break
+        if validator.is_valid(data):
+            break
+        new_messages = messages.copy()
+        new_messages.append({"role": "assistant", "content": make_answer(data)})
+        new_messages.append({"role": "user", "content": f"Correct the answer in JSON again to solve the following error: {validator.feedback}\nProvide the whole answer."})
+        data, reason, errors, completion = ask_and_parse(return_type, new_messages)
+    return data, reason, errors, completion
 
 
 def chat_raw(return_type, messages):
@@ -116,6 +127,7 @@ def ask_and_parse(return_type, messages):
                 messages.append({"role": "user", "content": s})
                 retry = True
             errors.append(str(e))
+    return None, "Retry limit exceeded", errors, completion
 
 
 def generate_schema(return_type):

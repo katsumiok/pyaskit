@@ -10,6 +10,7 @@ from .prompt import make_coding_prompt
 from .path import add_to_sys_path
 from .example import ExampleType, check_examples
 from .logging_config import setup_logger
+from .core import get_history, clear_history
 
 
 logger = setup_logger(__name__)
@@ -38,15 +39,25 @@ class Function:
         self._errors: List[str] = []
         self._completion = None
         self._recompilation_count = 0
+        self._validator = None
+        self._history = []
+
+    def set_validator(self, validator):
+        self._validator = validator
 
     def __call__(self, *args, **kwargs):
         converted_template = convert_template(self.template)
         variableMap = {}
         self.check_args(args, kwargs, self.variables, variableMap)
-
+        clear_history()
         result, self._reason, self._errors, self._completion = query(
-            converted_template, variableMap, self.return_type, self.training_examples
+            converted_template,
+            variableMap,
+            self.return_type,
+            self.training_examples,
+            self._validator,
         )
+        self._history = get_history()
         return result
 
     @property
@@ -64,6 +75,10 @@ class Function:
     @property
     def recompilation_count(self):
         return self._recompilation_count
+
+    @property
+    def history(self):
+        return self._history
 
     def check_args(self, args, kwargs, variables, variableMap):
         for var, arg in zip(variables, args):
@@ -95,13 +110,14 @@ class Function:
                 self.training_examples,
             )
             # print("Prompt:", prompt)
-            code, self._recompilation_count = implement_body(
+            code, self._recompilation_count, retry_count = implement_body(
                 function_name, prompt, test_examples
             )
             os.makedirs(module_path, exist_ok=True)
             with open(module_file_path, "w") as f:
                 f.write(
                     "# Recompilation count: " + str(self._recompilation_count) + "\n"
+                    "# Retry count: " + str(retry_count) + "\n"
                 )
                 f.write(code)
         else:

@@ -30,6 +30,7 @@ def defun(
     param_types: Dict[str, ParamType],
     template: str,
     training_examples: ExampleType = [],
+    validate=None,
 ):
     return Function(return_type, param_types, template, training_examples)
 
