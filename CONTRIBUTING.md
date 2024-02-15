@@ -51,9 +51,9 @@ git checkout -b name-of-your-bugfix-or-feature
 - When you're done making changes, check that your changes pass flake8 and the tests:
 
 ```bash
-black py_askit tests
-mypy py_askit tests
-python -m unittest discover
+black pyaskit tests
+mypy pyaskit tests
+pytest
 ```
 
 - Commit your changes and push your branch to GitHub:
