@@ -12,6 +12,7 @@ def chat_with_retry(messages, max_retries=10):
     model = config.get_model()
     response = client.chat.completions.create(
         model=model,
+        response_format={ "type": "json_object" },
         messages=messages,
     )
     return response.choices[0].message.content, response
