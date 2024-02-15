@@ -8,7 +8,7 @@ from . import config
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"), max_retries=10, timeout=10)
 
 
-def chat_with_retry(messages, max_retries=10):
+def chat_with_retry(messages):
     model = config.get_model()
     response = client.chat.completions.create(
         model=model,
