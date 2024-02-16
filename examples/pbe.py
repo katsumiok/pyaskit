@@ -1,4 +1,4 @@
-# Example of programming by example (PBE) in py_askit
+# Example of programming by example (PBE) in pyaskit
 from pyaskit import define
 import pyaskit.types as t
 
