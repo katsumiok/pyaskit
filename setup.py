@@ -15,6 +15,7 @@ setup(
         "openai>=1.12.0",
         "unidecode",
         "timeout-decorator",
+        "astor",
     ],
     classifiers=[
         "Programming Language :: Python",
