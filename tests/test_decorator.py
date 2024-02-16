@@ -45,15 +45,16 @@ def test_make_examples_failure():
         make_examples(test_func_bad, func)
 
 
-def test_sample_func():
-    assert sample_func(1, 2) == 3
-
-
-def test_sample_func():
+def t_sample_func():
     assert sample_func(1, 1) == 2
     assert sample_func(2, 2) == 4
 
 
-@function(codable=False, example=test_sample_func)
+def e_sample_func():
+    assert sample_func(1, 1) == 2
+    assert sample_func(2, 2) == 4
+
+
+@function(codable=True, example=e_sample_func, test=t_sample_func)
 def sample_func(x: int, y: int) -> int:
     """add {{x}} and {{y}}"""

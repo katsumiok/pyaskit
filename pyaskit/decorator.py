@@ -65,14 +65,13 @@ def function(codable=False, example=None, test=None):
         }
         return_type = signature.return_annotation
         description = func.__doc__
+        kwargs = {}
         if example is not None:
             examples = make_examples(example, func)
-            print(examples)
-            func = defun_hinted(
-                return_type, arg_types, description, training_examples=examples
-            )
-        else:
-            func = defun_hinted(return_type, arg_types, description)
+            kwargs["training_examples"] = examples
+        elif test is not None:
+            kwargs["test_examples"] = test
+        func = defun_hinted(return_type, arg_types, description, **kwargs)
         return func.compile() if codable else func
 
     return decorator
