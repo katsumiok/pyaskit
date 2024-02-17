@@ -2,8 +2,6 @@ from typing import Union
 
 try:
     from typing import TypedDict, _TypedDictMeta, get_origin, get_args, get_type_hints
-
-    python_38 = True
 except ImportError:
     from typing_extensions import (
         TypedDict,
@@ -12,8 +10,6 @@ except ImportError:
         get_args,
         get_type_hints,
     )
-
-    python_38 = False
 
 # from typing import Literal
 import pyaskit.types as t
@@ -29,15 +25,7 @@ def is_typed_dict(type_hint) -> bool:
     Returns:
     - bool: True if the type_hint is a TypedDict, False otherwise.
     """
-    # Check for Python 3.8 and newer
-    if python_38 and isinstance(type_hint, _TypedDictMeta):
-        return True
-    # Check for compatibility with older versions using typing_extensions
-    if (
-        not python_38
-        and isinstance(type_hint, type)
-        and issubclass(type_hint, TypedDict)
-    ):
+    if isinstance(type_hint, _TypedDictMeta):
         return True
     return False
 
