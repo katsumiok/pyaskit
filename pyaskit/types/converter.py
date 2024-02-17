@@ -3,7 +3,6 @@ from typing import Union
 try:
     from typing import (
         Literal,
-        TypedDict,
         _TypedDictMeta,
         get_origin,
         get_args,
@@ -12,27 +11,15 @@ try:
 except ImportError:
     from typing_extensions import (
         Literal,
-        TypedDict,
         _TypedDictMeta,
         get_origin,
         get_args,
         get_type_hints,
     )
-
-# from typing import Literal
 import pyaskit.types as t
 
 
 def is_typed_dict(type_hint) -> bool:
-    """
-    Check whether the provided type hint is a TypedDict.
-
-    Args:
-    - type_hint: The type hint to check.
-
-    Returns:
-    - bool: True if the type_hint is a TypedDict, False otherwise.
-    """
     if isinstance(type_hint, _TypedDictMeta):
         return True
     return False
@@ -49,8 +36,6 @@ def convert_type(x):
         return t.str
     origin = get_origin(x)
     args = get_args(x)
-    # origin = getattr(x, "__origin__", None)
-    # args = getattr(x, "__args__", ())
     if origin is list:
         return t.list(convert_type(args[0]))
     elif origin is tuple:
