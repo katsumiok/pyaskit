@@ -1,5 +1,10 @@
 import unittest
 from typing import Tuple, Union, List, Tuple, Dict
+
+try:
+    from typing import TypedDict
+except ImportError:
+    from typing_extensions import TypedDict
 import pyaskit.types as t
 from pyaskit.types.converter import convert_type
 
@@ -25,6 +30,13 @@ class TestConvert(unittest.TestCase):
 
     def test_union(self):
         self.assertTrue(convert_type(Union[int, str]).validate("hello"))
+
+    def test_typed_dict(self):
+        class Point(TypedDict):
+            x: int
+            y: int
+
+        self.assertTrue(convert_type(Point).validate({"x": 1, "y": 2}))
 
     # def test_literal(self):
     #     self.assertTrue(convert_type(Literal[5]).validate(5))
