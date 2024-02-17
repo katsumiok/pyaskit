@@ -1,9 +1,17 @@
 from typing import Union
 
 try:
-    from typing import TypedDict, _TypedDictMeta, get_origin, get_args, get_type_hints
+    from typing import (
+        Literal,
+        TypedDict,
+        _TypedDictMeta,
+        get_origin,
+        get_args,
+        get_type_hints,
+    )
 except ImportError:
     from typing_extensions import (
+        Literal,
         TypedDict,
         _TypedDictMeta,
         get_origin,
@@ -49,8 +57,8 @@ def convert_type(x):
         return t.tuple(*[convert_type(item_type) for item_type in args])
     elif origin is Union:
         return t.union(*[convert_type(arg) for arg in args])
-    # elif origin is Literal:
-    #     return t.literal(*get_args(x))
+    elif origin is Literal:
+        return t.literal(*get_args(x))
     elif origin is dict:
         return t.record(convert_type(args[0]), convert_type(args[1]))
     elif is_typed_dict(x):

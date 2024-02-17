@@ -2,9 +2,9 @@ import unittest
 from typing import Tuple, Union, List, Tuple, Dict
 
 try:
-    from typing import TypedDict
+    from typing import TypedDict, Literal
 except ImportError:
-    from typing_extensions import TypedDict
+    from typing_extensions import TypedDict, Literal
 import pyaskit.types as t
 from pyaskit.types.converter import convert_type
 
@@ -38,10 +38,10 @@ class TestConvert(unittest.TestCase):
 
         self.assertTrue(convert_type(Point).validate({"x": 1, "y": 2}))
 
-    # def test_literal(self):
-    #     self.assertTrue(convert_type(Literal[5]).validate(5))
-    #     self.assertTrue(convert_type(Literal["hello"]).validate("hello"))
-    #     self.assertTrue(convert_type(Literal[True]).validate(True))
+    def test_literal(self):
+        self.assertTrue(convert_type(Literal[5]).validate(5))
+        self.assertTrue(convert_type(Literal["hello"]).validate("hello"))
+        self.assertTrue(convert_type(Literal[True]).validate(True))
 
     def test_record(self):
         self.assertTrue(convert_type(Dict[str, int]).validate({"x": 1, "y": 2}))
