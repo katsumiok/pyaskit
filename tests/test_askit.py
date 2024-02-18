@@ -8,11 +8,16 @@ class TestAskIt(unittest.TestCase):
         sum = ai.ask(t.int, "Add 1 + 2")
         self.assertEqual(type(sum), int)
 
+    def test_ask_with_typehint(self):
+        sum = ai.ask(int, "Add 1 + 2")
+        self.assertEqual(type(sum), int)
+
     def test_define_ok(self):
         valid_examples = [
             {"input": {"x": 1}, "output": 2},
         ]
         ai.define(t.int, "add 1 to {{x}}", training_examples=valid_examples)
+        ai.define(int, "add 1 to {{x}}", training_examples=valid_examples)
 
     def test_define_invalid_output_type(self):
         invalid_output_type_examples = [

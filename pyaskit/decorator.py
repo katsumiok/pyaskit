@@ -1,5 +1,5 @@
 import inspect
-from .py_askit import defun_hinted
+from .py_askit import defun
 
 import ast
 import inspect
@@ -73,7 +73,7 @@ def function(codable: bool, example=None, test=None):
             kwargs["training_examples"] = examples
         elif test is not None:
             kwargs["test_examples"] = test
-        func = defun_hinted(return_type, arg_types, description, **kwargs)
+        func = defun(return_type, arg_types, description, **kwargs)
         return func.compile() if codable else func
 
     return decorator

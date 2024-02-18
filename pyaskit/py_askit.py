@@ -1,4 +1,9 @@
 from typing import Union, Dict, List, Tuple
+
+try:
+    from typing import TypedDict
+except ImportError:
+    from typing_extensions import TypedDict
 from . import types as t
 from .types.converter import convert_type
 import time
@@ -6,7 +11,7 @@ from contextlib import contextmanager
 from .example import ExampleType
 from .function import Function
 
-ReturnType = Union[t.Type, Dict, List, Tuple, str, int, float, bool]
+ReturnType = Union[t.Type, Dict, List, Tuple, str, int, float, bool, TypedDict, None]
 ParamType = ReturnType
 
 
@@ -33,25 +38,6 @@ def defun(
     validate=None,
 ):
     return Function(return_type, param_types, template, training_examples)
-
-
-def define_hinted(
-    return_type: ReturnType, template: str, training_examples: ExampleType = []
-):
-    x = convert_type(return_type)
-    return Function(x, None, template, training_examples)
-
-
-def defun_hinted(
-    return_type: ReturnType,
-    param_types: Dict[str, ParamType],
-    template: str,
-    training_examples: ExampleType = [],
-    order=None,
-):
-    x = convert_type(return_type)
-    y = {k: convert_type(v) for k, v in param_types.items()}
-    return Function(x, y, template, training_examples, order=order)
 
 
 @contextmanager
