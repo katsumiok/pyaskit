@@ -11,6 +11,7 @@ from .path import add_to_sys_path
 from .example import ExampleType, check_examples
 from .logging_config import setup_logger
 from .core import get_history, clear_history
+from .types.converter import convert_type
 
 
 logger = setup_logger(__name__)
@@ -28,8 +29,14 @@ class Function:
         training_examples: ExampleType = [],
         order: List[str] = None,
     ) -> None:
+        return_type = convert_type(return_type)
         if not isinstance(return_type, t.Type):
-            raise ValueError("return_type must be a Type defined in py_askit.type")
+            raise ValueError(
+                "return_type must be a type hint or Type defined in pyaskit.types"
+            )
+        if param_types is not None:
+            for k, v in param_types.items():
+                param_types[k] = convert_type(v)
         self.return_type = return_type
         self.param_types = param_types
         self.template = template

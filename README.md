@@ -26,13 +26,56 @@ Using *AskIt*, you can deploy LLMs for a multitude of tasks, such as:
   - No need to specify the output format in the prompt
   - No need to parse the response to extract the desired output
   
-  ![Type-guided output control demonstration](https://katsumiok.github.io/pyaskit/images/type_guided_output_control.gif)
+```python
+from pyaskit import ask
+
+# Automatically parses the response to an integer
+sum = ask(int, "add 1 + 1")
+# `sum` is an integer with a value of 2
+```
+
+```python
+from typing import TypedDict, List
+from pyaskit import ask
+
+# Define a typed dictionary for programming languages
+class PL(TypedDict):
+    name: str
+    year_created: int
+
+# Automatically extracts structured information into a list of dictionaries
+langs = ask(List[PL], "List the two oldest programming languages.")
+# `langs` holds information on the oldest programming languages in a structured format like
+# [{'name': 'Fortran', 'year_created': 1957},
+#  {'name': 'Lisp', 'year_created': 1958}]
+```
 
 - [x] Template-Based Function Definition: Define functions using a prompt template.
-    ![Template-based function definition demonstration](https://katsumiok.github.io/pyaskit/images/template_based_func_def.gif)
+
+```python
+from pyaskit import function
+
+@function(codable=False)
+def translate(s: str, lang: str) -> str:
+    """Translate {{s}} into {{lang}} language."""
+
+s = translate("こんにちは世界。", "English")
+# `s` would be "Hello, world."
+```
 
 - [x] Code Generation: Generate functions from the unified interface.
-    ![Natural Language Programming demonstration](https://katsumiok.github.io/pyaskit/images/codable_task.gif)
+
+```python
+from pyaskit import function
+
+@function(codable=True)
+def get_html(url: str) -> str:
+    """Get the webpage from {{url}}."""
+    # When `codable` is set to True, the body of the function is automatically coded by an LLM.
+
+html = get_html("https://github.com/katsumiok/pyaskit/blob/main/README.md")
+# `html` contains the HTML version of this README.md
+```
 
 - [x] Programming by Example (PBE): Define functions using examples.
     Refer to the [Programming by Example (PBE)](#programming-by-example-pbe) section for further details.
@@ -91,26 +134,44 @@ Here are some basic examples to help you familiarize yourself with *AskIt*:
 
 ```python
 import pyaskit as ai
-import pyaskit.types as t
 
-s = ai.ask(t.str, 'Paraphrase "Hello World!"')
+s = ai.ask(str, 'Paraphrase "Hello World!"')
 print(s)
 ```
 
-To utilize *AskIt*, start by importing the `pyaskit` and `pyaskit.types` modules. The `ask` API, which takes two arguments - the output type and the prompt - produces the LLM's output in the designated format. In this case, the output type is `str` and the prompt is `Paraphrase "Hello World!"`. A comprehensive explanation of types in *AskIt* is provided in the [Types](#types) section. Executing this code will yield a paraphrase of the prompt, such as:
+To utilize *AskIt*, start by importing the `pyaskit` module. The `ask` API, which takes two arguments - the output type and the prompt - produces the LLM's output in the designated format. In this case, the output type is `str` and the prompt is `Paraphrase "Hello World!"`. A comprehensive explanation of types in *AskIt* is provided in the [Types](#types) section. Executing this code will yield a paraphrase of the prompt, such as:
 ```
 Greetings, Planet!
 ```
 
-### Defining a Function from a Template Prompt
+
+### Defining a Function from a Prompt Template
+
+#### With the `function` decorator
+
+The `function` decorator allows defining a function with a prompt template. The parameters of a defined function can be used as parameters of a prompt template. For example,
+
+```python
+from pyaskit import function
+
+@function(codable=False)
+def paraphrase(text: str) -> str:
+    """Paraphrase {{text}}"""
+
+s = paraphrase('Hello World!')
+print(s)
+```
+
+Where `{{text}}` represents a template parameter and corresponds to the function parameter.
+
+#### With the `define ` API
 
 The `define` API allows for prompt parameterization using template syntax:
 
 ```python
 import pyaskit as ai
-import pyaskit.types as t
 
-paraphrase = ai.define(t.str, 'Paraphrase {{text}}')
+paraphrase = ai.define(str, 'Paraphrase {{text}}')
 s = paraphrase(text='Hello World!')
 # s = paraphrase('Hello World!') # This is also valid
 print(s)
@@ -127,9 +188,8 @@ The subsequent example demonstrates using *AskIt* to tackle a task necessitating
 
 ```python
 import pyaskit as ai
-import pyaskit.types as t
 
-get_html = ai.define(t.str, 'Get the webpage from {{url}}').compile()
+get_html = ai.define(str, 'Get the webpage from {{url}}').compile()
 html = get_html(url='https://csail.mit.edu')
 print(html)
 ```
@@ -139,14 +199,23 @@ While the above example does not specify the type of the parameter `url`, *AskIt
 
 ```python
 import pyaskit as ai
-import pyaskit.types as t
 
-get_html = ai.defun(t.str, {"url": t.str}, 'Get the webpage from {{url}}').compile()
+get_html = ai.defun(str, {"url": str}, 'Get the webpage from {{url}}').compile()
 html = get_html(url='https://csail.mit.edu')
 print(html)
 ```
 The second argument of the `defun` API is a dictionary that maps parameter names to their types.
 
+We can the same thing with the following code:
+```python
+from pyaskit import function
+
+@function(codable=True)
+def get_html(url: str) -> str:
+    """Get the webpage from {{url}}"""
+html = get_html(url='https://csail.mit.edu')
+print(html)
+```
 ## Programming by Example (PBE)
 
 ### Function Definition Using Examples
@@ -156,7 +225,6 @@ Let's consider creating a function to add two binary numbers (represented as str
 
 ```python
 from pyaskit import define
-import pyaskit.types as t
 
 training_examples = [
     {"input": {"x": "1", "y": "0"}, "output": "1"},
@@ -166,7 +234,7 @@ training_examples = [
     {"input": {"x": "1111", "y": "1"}, "output": "10000"},
 ]
 
-add_binary_numbers = define(t.str, "Add {{x}} and {{y}}", training_examples=training_examples)
+add_binary_numbers = define(str, "Add {{x}} and {{y}}", training_examples=training_examples)
 sum_binary = add_binary_numbers(x="101", y="11")
 print(sum_binary)  # Output: "1000"
 ```
@@ -193,7 +261,7 @@ print(sum_binary)  # Output: "1000"
 Here, `f` is the generated function that operates similarly to `add_binary_numbers`. By comparing the output of the generated function with the expected output for each test example, *AskIt* ensures the generated function behaves as expected. If any discrepancy arises, *AskIt* re-attempts the translation. After multiple unsuccessful translation attempts, *AskIt* raises an exception.
 ## Specifying Types in *AskIt*
 
-*AskIt* offers APIs to designate the output types for Language Learning Models (LLMs). By supplying these types as the first argument to the `ask` and `define` APIs, you can manage the LLM's output format.
+*AskIt* offers APIs to designate the output types for Language Learning Models (LLMs). By supplying these types as the first argument to the `ask` and `define` APIs, you can manage the LLM's output format. You can also use type hints provided Python.
 
 The following table describes the various types supported by *AskIt*:
 

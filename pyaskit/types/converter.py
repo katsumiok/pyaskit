@@ -26,6 +26,8 @@ def is_typed_dict(type_hint) -> bool:
 
 
 def convert_type(x):
+    if isinstance(x, t.Type):
+        return x
     if x == int:
         return t.int
     elif x == float:
