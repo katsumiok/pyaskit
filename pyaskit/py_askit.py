@@ -36,8 +36,11 @@ def defun(
     template: str,
     training_examples: ExampleType = [],
     validate=None,
+    params_order: List[str] = None,
 ):
-    return Function(return_type, param_types, template, training_examples)
+    return Function(
+        return_type, param_types, template, training_examples, order=params_order
+    )
 
 
 @contextmanager
