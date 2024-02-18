@@ -266,7 +266,7 @@ print(sum_binary)  # Output: "1000"
 Here, `f` is the generated function that operates similarly to `add_binary_numbers`. By comparing the output of the generated function with the expected output for each test example, *AskIt* ensures the generated function behaves as expected. If any discrepancy arises, *AskIt* re-attempts the translation. After multiple unsuccessful translation attempts, *AskIt* raises an exception.
 ## Specifying Types in *AskIt*
 
-*AskIt* offers APIs to designate the output types for Language Learning Models (LLMs). By supplying these types as the first argument to the `ask` and `define` APIs, you can manage the LLM's output format.
+*AskIt* offers APIs to designate the output types for Language Learning Models (LLMs). By supplying these types as the first argument to the `ask` and `define` APIs, you can manage the LLM's output format. You can also use type hints provided Python.
 
 The following table describes the various types supported by *AskIt*:
 
