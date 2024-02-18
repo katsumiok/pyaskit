@@ -67,7 +67,7 @@ def function(codable: bool, example=None, test=None):
         return_type = signature.return_annotation
         description = func.__doc__
         kwargs = {}
-        kwargs["order"] = order
+        kwargs["params_order"] = order
         if example is not None:
             examples = make_examples(example, func)
             kwargs["training_examples"] = examples
