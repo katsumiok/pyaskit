@@ -45,10 +45,10 @@ class PL(TypedDict):
 
 # Automatically extracts structured information into a list of dictionaries
 langs = ask(List[PL], "List the two oldest programming languages.")
-# `langs` holds information on the oldest programming languages in a structured format
-# like [{'name': 'Fortran', 'year_created': 1957}, {'name': 'Lisp', 'year_created': 1958}]
+# `langs` holds information on the oldest programming languages in a structured format like
+# [{'name': 'Fortran', 'year_created': 1957},
+#  {'name': 'Lisp', 'year_created': 1958}]
 ```
-<!-- ![Type-guided output control demonstration](https://katsumiok.github.io/pyaskit/images/type_guided_output_control.gif) -->
 
 - [x] Template-Based Function Definition: Define functions using a prompt template.
 
@@ -60,11 +60,8 @@ def translate(s: str, lang: str) -> str:
     """Translate {{s}} into {{lang}} language."""
 
 s = translate("こんにちは世界。", "English")
-# `s` would be "Hello, world." demonstrating dynamic translation based on input and target language.
+# `s` would be "Hello, world."
 ```
-
-
-<!-- ![Template-based function definition demonstration](https://katsumiok.github.io/pyaskit/images/template_based_func_def.gif) -->
 
 - [x] Code Generation: Generate functions from the unified interface.
 
@@ -79,8 +76,6 @@ def get_html(url: str) -> str:
 html = get_html("https://github.com/katsumiok/pyaskit/blob/main/README.md")
 # `html` contains the HTML version of this README.md
 ```
-
-<!-- ![Natural Language Programming demonstration](https://katsumiok.github.io/pyaskit/images/codable_task.gif) -->
 
 - [x] Programming by Example (PBE): Define functions using examples.
     Refer to the [Programming by Example (PBE)](#programming-by-example-pbe) section for further details.
