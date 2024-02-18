@@ -26,13 +26,15 @@ class Function:
         param_types,
         template: str,
         training_examples: ExampleType = [],
+        order: List[str] = None,
     ) -> None:
         if not isinstance(return_type, t.Type):
             raise ValueError("return_type must be a Type defined in py_askit.type")
         self.return_type = return_type
         self.param_types = param_types
         self.template = template
-        self.variables = extract_variables(self.template)
+        self.variables = extract_variables(self.template, order=order)
+
         check_examples(return_type, self.variables, training_examples)
         self.training_examples = training_examples
         self._reason = ""

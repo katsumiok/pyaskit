@@ -57,15 +57,17 @@ def make_examples(func, tested_func):
     return examples
 
 
-def function(codable=False, example=None, test=None):
+def function(codable: bool, example=None, test=None):
     def decorator(func):
         signature = inspect.signature(func)
         arg_types = {
             name: param.annotation for name, param in signature.parameters.items()
         }
+        order = [name for name, _ in signature.parameters.items()]
         return_type = signature.return_annotation
         description = func.__doc__
         kwargs = {}
+        kwargs["order"] = order
         if example is not None:
             examples = make_examples(example, func)
             kwargs["training_examples"] = examples

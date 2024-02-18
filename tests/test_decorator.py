@@ -58,3 +58,12 @@ def e_sample_func():
 @function(codable=True, example=e_sample_func, test=t_sample_func)
 def sample_func(x: int, y: int) -> int:
     """add {{x}} and {{y}}"""
+
+
+@function(codable=False)
+def subtract(x: int, y: int) -> int:
+    """subtract {{y}} from {{x}}"""
+
+
+def test_function_decorator():
+    assert subtract(2, 1) == 1

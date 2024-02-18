@@ -47,10 +47,11 @@ def defun_hinted(
     param_types: Dict[str, ParamType],
     template: str,
     training_examples: ExampleType = [],
+    order=None,
 ):
     x = convert_type(return_type)
     y = {k: convert_type(v) for k, v in param_types.items()}
-    return Function(x, y, template, training_examples)
+    return Function(x, y, template, training_examples, order=order)
 
 
 @contextmanager
