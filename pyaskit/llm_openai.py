@@ -5,7 +5,7 @@ import openai
 from . import config
 
 
-client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"), max_retries=0)
 
 
 def chat_with_retry(messages, max_retries=10):
@@ -20,11 +20,12 @@ def chat_with_retry(messages, max_retries=10):
             return response.choices[0].message.content, response
         except (
             openai.APIError,
-            openai.Timeout,
+            openai.APITimeoutError,
             openai.APIConnectionError,
             openai.RateLimitError,
-            openai.ServiceUnavailableError,
+            openai.InternalServerError,
         ):
+
             # https://platform.openai.com/docs/guides/error-codes/python-library-error-types
             wait_time = base_wait_time * 2**i
             wait_time = min(wait_time, 30)
