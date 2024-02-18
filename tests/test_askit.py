@@ -5,14 +5,19 @@ import pyaskit.types as t
 
 class TestAskIt(unittest.TestCase):
     def test_ask(self):
-        sum = ai.ask(t.int, "Add 1 + 2")
-        self.assertEqual(type(sum), int)
+        result = ai.ask(t.int, "Add 1 + 2")
+        self.assertEqual(type(result), int)
+
+    def test_ask_with_typehint(self):
+        result = ai.ask(int, "Add 1 + 2")
+        self.assertEqual(type(result), int)
 
     def test_define_ok(self):
         valid_examples = [
             {"input": {"x": 1}, "output": 2},
         ]
         ai.define(t.int, "add 1 to {{x}}", training_examples=valid_examples)
+        ai.define(int, "add 1 to {{x}}", training_examples=valid_examples)
 
     def test_define_invalid_output_type(self):
         invalid_output_type_examples = [
