@@ -12,8 +12,19 @@ class SchemaGenerator(t.TypeVisitor):
         return json.dumps(type.value)
 
     def visit_dict(self, type):
-        props = [f"{key}: {value.accept(self)}" for key, value in type.props.items()]
-        return f'{{ {"; ".join(props)} }}'
+        if type.name != None:
+            if type.name not in self.type_defs:
+                self.type_defs[type.name] = None
+                props = [
+                    f"{key}: {value.accept(self)}" for key, value in type.props.items()
+                ]
+                self.type_defs[type.name] = f'{{ {"; ".join(props)} }}'
+            return type.name
+        else:
+            props = [
+                f"{key}: {value.accept(self)}" for key, value in type.props.items()
+            ]
+            return f'{{ {"; ".join(props)} }}'
 
     def visit_int(self, type):
         return "number"

@@ -108,6 +108,7 @@ class DictType(Type):
         if not all(isinstance(key, builtins.str) for key in props.keys()):
             raise TypeError("All keys in fields must be of type str")
         self.props = props
+        self.name = None
 
     def validate(self, value):
         if not isinstance(value, builtins.dict):

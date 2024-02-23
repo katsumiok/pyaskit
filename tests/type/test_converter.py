@@ -9,6 +9,11 @@ import pyaskit.types as t
 from pyaskit.types.converter import convert_type
 
 
+class Node(TypedDict):
+    name: str
+    children: List["Node"]
+
+
 class TestConvert(unittest.TestCase):
     def test_int(self):
         self.assertEqual(convert_type(int), t.int)
@@ -45,3 +50,11 @@ class TestConvert(unittest.TestCase):
 
     def test_record(self):
         self.assertTrue(convert_type(Dict[str, int]).validate({"x": 1, "y": 2}))
+
+    def test_recursive(self):
+
+        self.assertTrue(
+            convert_type(Node).validate(
+                {"name": "root", "children": [{"name": "child", "children": []}]}
+            )
+        )
