@@ -1,5 +1,5 @@
-import os
 import google.generativeai as genai
+from . import config
 
 
 def convert_role(role):
@@ -22,7 +22,7 @@ def convert_messages(messages):
     return result
 
 
-model = genai.GenerativeModel(os.getenv("ASKIT_MODEL"))
+model = genai.GenerativeModel(config.get_model())
 
 
 def chat_with_retry(messages, max_retries=10):
