@@ -3,7 +3,9 @@ import time
 import random
 import openai
 from . import config
+from .models import models
 
+model_name = os.getenv("ASKIT_MODEL")
 
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"), max_retries=0)
 
@@ -32,3 +34,9 @@ def chat_with_retry(messages, max_retries=10):
             jitter = wait_time / 2
             time.sleep(wait_time + random.uniform(-jitter, jitter))
     raise Exception(f"Failed to get response after {max_retries} attempts")
+
+
+models_infos = [model for model in models if model["model_name"] == model_name]
+model_info = models_infos[0] if models_infos else None
+if model_info and model_info["api_name"] == "Gemini API":
+    from .llm_gemini import chat_with_retry
