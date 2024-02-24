@@ -1,6 +1,6 @@
 import importlib
 from typing import Optional
-from pyaskit import set_chat_function
+from .core import set_chat_function
 
 
 def use_llama(
