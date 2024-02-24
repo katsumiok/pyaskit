@@ -9,7 +9,7 @@
 
 ## Introduction
 
-*AskIt* serves as a dedicated library or domain-specific language designed to streamline the utilization of Large Language Models (LLMs) such as GPT-4. It simplifies the complexities of prompt engineering and eradicates the requirement for parsing responses from LLMs, making programming tasks smoother.
+*AskIt* serves as a dedicated library or domain-specific language designed to streamline the utilization of Large Language Models (LLMs) such as GPT-4, Gemini, and LLama2. It simplifies the complexities of prompt engineering and eradicates the requirement for parsing responses from LLMs, making programming tasks smoother.
 
 Using *AskIt*, you can deploy LLMs for a multitude of tasks, such as:
 
@@ -17,7 +17,7 @@ Using *AskIt*, you can deploy LLMs for a multitude of tasks, such as:
 - Problem Solving: resolving mathematical problems.
 - Code Generation: creating new codes, and more.
 
-*pyaskit* can use GPT or LLama2 as a backend.
+*pyaskit* can use GPT, Gemini, or LLama2 as a backend.
 *pyaskit* operates through the [OpenAI API](https://beta.openai.com/) or [LLama2 API](https://github.com/facebookresearch/llama). Besides Python, *AskIt* has also been implemented in TypeScript. You can access the TypeScript version, [ts-askit](https://github.com/katsumiok/ts-askit).
 
 ## Key Features
@@ -107,6 +107,21 @@ export ASKIT_MODEL=<model name>
 ```
 `<model name>` is the name of the model you want to use. 
 The latest AskIt is tested with `gpt-4` and `gpt-3.5-turbo-16k`. You can find the list of available models in the [OpenAI API documentation](https://platform.openai.com/docs/models).
+
+### Preparation for Gemini API
+
+Before using *AskIt*, you need to set your Google API key as an environment variable `GOOGLE_API_KEY`:
+```bash
+export GOOGLE_API_KEY=<your Google API key>
+```
+ You can find your API key in the [OpenAI dashboard](https://ai.google.dev/).
+
+You need to specify the model name as an environment variable `ASKIT_MODEL`:
+```bash
+export ASKIT_MODEL=<model name>
+```
+`<model name>` is the name of the model you want to use. 
+The latest AskIt is tested with `gemini-pro`.
 
 ### Preparation for Llama 2 API (Experimental)
 

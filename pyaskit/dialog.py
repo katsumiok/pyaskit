@@ -3,7 +3,7 @@ import re
 from .types.schema import SchemaGenerator
 from .example import ExampleType
 import pyaskit.types as t
-from .core import chat
+from .llm import chat
 
 
 def extract_json(text: str):

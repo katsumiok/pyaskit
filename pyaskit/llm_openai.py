@@ -4,7 +4,6 @@ import random
 import openai
 from . import config
 
-
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"), max_retries=0)
 
 
