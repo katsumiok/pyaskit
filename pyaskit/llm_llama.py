@@ -1,6 +1,6 @@
 import importlib
 from typing import Optional
-from .core import set_chat_function
+from .llm import set_chat_function
 
 
 def use_llama(

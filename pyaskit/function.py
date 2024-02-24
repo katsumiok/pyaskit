@@ -10,7 +10,7 @@ from .prompt import make_coding_prompt
 from .path import add_to_sys_path
 from .example import ExampleType, check_examples
 from .logging_config import setup_logger
-from .core import get_history, clear_history
+from .llm import get_history, clear_history
 from .types.converter import convert_type
 
 

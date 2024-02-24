@@ -9,7 +9,7 @@ from timeout_decorator import timeout, TimeoutError
 from .example import ExampleType
 from .logging_config import setup_logger
 from .path import add_to_sys_path
-from .core import chat
+from .llm import chat
 
 
 logger = setup_logger(__name__)
