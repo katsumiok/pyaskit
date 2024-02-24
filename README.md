@@ -18,7 +18,7 @@ Using *AskIt*, you can deploy LLMs for a multitude of tasks, such as:
 - Code Generation: creating new codes, and more.
 
 *pyaskit* can use GPT, Gemini, or LLama2 as a backend.
-*pyaskit* operates through the [OpenAI API](https://beta.openai.com/) or [LLama2 API](https://github.com/facebookresearch/llama). Besides Python, *AskIt* has also been implemented in TypeScript. You can access the TypeScript version, [ts-askit](https://github.com/katsumiok/ts-askit).
+*pyaskit* operates through the [OpenAI API](https://beta.openai.com/),[Gemini API](https://ai.google.dev/), or [LLama2 API](https://github.com/facebookresearch/llama). Besides Python, *AskIt* has also been implemented in TypeScript. You can access the TypeScript version, [ts-askit](https://github.com/katsumiok/ts-askit).
 
 ## Key Features
 
