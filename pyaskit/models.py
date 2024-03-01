@@ -131,4 +131,24 @@ models = [
         "output_token": 4096,
         "api_name": "Gemini API",
     },
+    {
+        "model_name": "command-light",
+        "input_token": 4096,
+        "api_name": "Cohere API",
+    },
+    {
+        "model_name": "command-light-nightly",
+        "input_token": 8192,
+        "api_name": "Cohere API",
+    },
+    {
+        "model_name": "command",
+        "input_token": 4096,
+        "api_name": "Cohere API",
+    },
+    {
+        "model_name": "command-nightly",
+        "input_token": 8192,
+        "api_name": "Cohere API",
+    },
 ]
