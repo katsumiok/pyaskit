@@ -151,4 +151,34 @@ models = [
         "input_token": 8192,
         "api_name": "Cohere API",
     },
+    {
+        "model_name": "claude-3-opus-20240229",
+        "input_tokens": 200000,
+        "output_tokens": 4096,
+        "api_name": "Claude API",
+    },
+    {
+        "model_name": "claude-3-sonnet-20240229",
+        "input_tokens": 200000,
+        "output_tokens": 4096,
+        "api_name": "Claude API",
+    },
+    {
+        "model_name": "claude-2.1",
+        "input_tokens": 200000,
+        "output_tokens": 4096,
+        "api_name": "Claude API",
+    },
+    {
+        "model_name": "claude-2.0",
+        "input_tokens": 100000,
+        "output_tokens": 4096,
+        "api_name": "Claude API",
+    },
+    {
+        "model_name": "claude-instant-1.2",
+        "input_tokens": 100000,
+        "output_tokens": 4096,
+        "api_name": "Claude API",
+    },
 ]

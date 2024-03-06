@@ -6,6 +6,8 @@ models_infos = [model for model in models if model["model_name"] == model_name]
 model_info = models_infos[0] if models_infos else None
 if model_info and model_info["api_name"] == "Gemini API":
     from .llm_gemini import chat_with_retry
+elif model_info and model_info["api_name"] == "Claude API":
+    from .llm_claude import chat_with_retry
 elif model_info and model_info["api_name"] == "Cohere API":
     from .llm_cohere import chat_with_retry
 else:
