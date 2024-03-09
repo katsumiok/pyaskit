@@ -114,7 +114,7 @@ export ASKIT_MODEL=<model name>
 ```
 `<model name>` is the name of the model you want to use.
 The latest AskIt is tested with `gpt-4`, `gpt-3.5-turbo-16k`, `gemini-pro`, `claude-2.1`, and `cohere-2.0`. You can find the list of available models in the [OpenAI API documentation](https://platform.openai.com/docs/models), [Gemini API documentation](https://ai.google.dev/), [Claude API documentation](https://anthropic.com/), and [COHERE API documentation](https://cohere.ai/).
-You can also find the available models in the [`models.py`](pyaskit/models.py) file.
+You can also find the available models in the [`models.py`](https://github.com/katsumiok/pyaskit/blob/main/pyaskit/models.py) file.
 
 ### Preparation for Llama 2 API (Experimental)
 
