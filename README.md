@@ -92,36 +92,29 @@ or
 pip install git+https://github.com/katsumiok/pyaskit.git
 ```
 
-### Preparation for OpenAI API
+### Preparation for OpenAI API, Gemini API, Claude API, or COHERE API
 
-Before using *AskIt*, you need to set your OpenAI API key as an environment variable `OPENAI_API_KEY`:
+Before using *AskIt*, you need to set your API key as an appropriate environment variable:
+
+- OpenAI API: `OPENAI_API_KEY`
+- Gemini API: `GOOGLE_API_KEY`
+- Claude API: `ANTHROPIC_API_KEY`
+- COHERE API: `CO_API_KEY`
+
+For example, to use OpenAI API, you need to set your OpenAI API key as an environment variable `OPENAI_API_KEY`:
 ```bash
 export OPENAI_API_KEY=<your OpenAI API key>
 ```
 `<your OpenAI API key>` is a string that looks like this: `sk-<your key>`.
- You can find your API key in the [OpenAI dashboard](https://platform.openai.com/account/api-keys).
-
-You can also specify the model name as an environment variable `ASKIT_MODEL`:
-```bash
-export ASKIT_MODEL=<model name>
-```
-`<model name>` is the name of the model you want to use. 
-The latest AskIt is tested with `gpt-4` and `gpt-3.5-turbo-16k`. You can find the list of available models in the [OpenAI API documentation](https://platform.openai.com/docs/models).
-
-### Preparation for Gemini API
-
-Before using *AskIt*, you need to set your Google API key as an environment variable `GOOGLE_API_KEY`:
-```bash
-export GOOGLE_API_KEY=<your Google API key>
-```
- You can find your API key in the [OpenAI dashboard](https://ai.google.dev/).
+ You can find your OpenAI API key in the [OpenAI dashboard](https://platform.openai.com/account/api-keys).
 
 You need to specify the model name as an environment variable `ASKIT_MODEL`:
 ```bash
 export ASKIT_MODEL=<model name>
 ```
-`<model name>` is the name of the model you want to use. 
-The latest AskIt is tested with `gemini-pro`.
+`<model name>` is the name of the model you want to use.
+The latest AskIt is tested with `gpt-4`, `gpt-3.5-turbo-16k`, `gemini-pro`, `claude-2.1`, and `cohere-2.0`. You can find the list of available models in the [OpenAI API documentation](https://platform.openai.com/docs/models), [Gemini API documentation](https://ai.google.dev/), [Claude API documentation](https://anthropic.com/), and [COHERE API documentation](https://cohere.ai/).
+You can also find the available models in the [`models.py`](pyaskit/models.py) file.
 
 ### Preparation for Llama 2 API (Experimental)
 
