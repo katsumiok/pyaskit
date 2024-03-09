@@ -9,7 +9,7 @@
 
 ## Introduction
 
-*AskIt* serves as a dedicated library or domain-specific language designed to streamline the utilization of Large Language Models (LLMs) such as GPT-4, Gemini, and LLama2. It simplifies the complexities of prompt engineering and eradicates the requirement for parsing responses from LLMs, making programming tasks smoother.
+*AskIt* serves as a dedicated library or domain-specific language designed to streamline the utilization of Large Language Models (LLMs) such as GPT-4, Gemini, Claude, COHERE, and LLama2. It simplifies the complexities of prompt engineering and eradicates the requirement for parsing responses from LLMs, making programming tasks smoother.
 
 Using *AskIt*, you can deploy LLMs for a multitude of tasks, such as:
 
@@ -17,8 +17,8 @@ Using *AskIt*, you can deploy LLMs for a multitude of tasks, such as:
 - Problem Solving: resolving mathematical problems.
 - Code Generation: creating new codes, and more.
 
-*pyaskit* can use GPT, Gemini, or LLama2 as a backend.
-*pyaskit* operates through the [OpenAI API](https://beta.openai.com/),[Gemini API](https://ai.google.dev/), or [LLama2 API](https://github.com/facebookresearch/llama). Besides Python, *AskIt* has also been implemented in TypeScript. You can access the TypeScript version, [ts-askit](https://github.com/katsumiok/ts-askit).
+*pyaskit* can use GPT, Gemini, Claude, COHERE, or LLama2 as a backend.
+*pyaskit* operates through the [OpenAI API](https://beta.openai.com/),[Gemini API](https://ai.google.dev/), [Claude API](https://anthropic.com/), and [COHERE API](https://cohere.ai/) or [LLama2 API](https://github.com/facebookresearch/llama). Besides Python, *AskIt* has also been implemented in TypeScript. You can access the TypeScript version, [ts-askit](https://github.com/katsumiok/ts-askit).
 
 ## Key Features
 
