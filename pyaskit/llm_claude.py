@@ -4,7 +4,7 @@ from . import config
 
 def convert_role(role):
     if role == "system":
-        return "usr"
+        return "user"
     return role
 
 
@@ -24,4 +24,4 @@ def chat_with_retry(messages):
         model=config.get_model(), max_tokens=1024, messages=messages
     )
 
-    return response.content.text, response
+    return response.content[0].text, response
