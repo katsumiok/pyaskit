@@ -10,7 +10,6 @@ from .prompt import make_coding_prompt
 from .path import add_to_sys_path
 from .example import ExampleType, check_examples
 from .logging_config import setup_logger
-from .llm import get_history, clear_history
 from .types.converter import convert_type
 
 
@@ -67,7 +66,6 @@ class Function:
         self._completion = None
         self._recompilation_count = 0
         self._validator = None
-        self._history = []
 
     def set_validator(self, validator):
         self._validator = validator
@@ -77,14 +75,12 @@ class Function:
         self._reason = response.reason
         self._errors = response.errors
         self._completion = response.completion
-        self._history = response.history
         return response.answer
 
     def ask(self, *args, **kwargs):
         converted_template = convert_template(self.template)
         variableMap = {}
         self.check_args(args, kwargs, self.variables, variableMap)
-        clear_history()
         answer, reason, _errors, completion, messages = query(
             converted_template,
             variableMap,
@@ -109,10 +105,6 @@ class Function:
     @property
     def recompilation_count(self):
         return self._recompilation_count
-
-    @property
-    def history(self):
-        return self._history
 
     def check_args(self, args, kwargs, variables, variableMap):
         for var, arg in zip(variables, args):
