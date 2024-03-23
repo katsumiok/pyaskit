@@ -14,15 +14,6 @@ else:
     from .llm_openai import chat_with_retry
 
 chat_function = chat_with_retry
-history = []
-
-
-def get_history():
-    return history
-
-
-def clear_history():
-    history.clear()
 
 
 def set_chat_function(func):
@@ -33,5 +24,4 @@ def set_chat_function(func):
 
 def chat(messages):
     content, completion = chat_function(messages)
-    history.append(messages + [{"role": "assistant", "content": content}])
     return content, completion
