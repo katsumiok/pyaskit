@@ -6,3 +6,4 @@ from .dialog import chat_raw
 from .llm_llama import use_llama
 from .function_name import generate_unique_function_name
 from .decorator import function
+from .dialog import improve

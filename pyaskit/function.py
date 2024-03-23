@@ -3,7 +3,7 @@ import os
 import importlib
 from . import types as t
 from .template import convert_template, extract_variables
-from .dialog import query
+from .dialog import query, improve
 from .function_name import generate_unique_function_name
 from .code_generator import implement_body
 from .prompt import make_coding_prompt
@@ -18,6 +18,24 @@ logger = setup_logger(__name__)
 
 # Default path
 module_path = os.path.join(os.getcwd(), "askit")
+
+
+class Response:
+    def __init__(self, answer, answer_type, completion, reason, errors, messages):
+        self.answer = answer
+        self.answer_type = answer_type
+        self.completion = completion
+        self.reason = reason
+        self.errors = errors
+        self.messages = messages
+
+    def improve(self, feedback: str):
+        answer, reason, errors, completion, _ = improve(
+            self.answer, self.answer_type, self.messages, feedback
+        )
+        return Response(
+            answer, self.answer_type, completion, reason, errors, self.messages
+        )
 
 
 class Function:
@@ -55,19 +73,26 @@ class Function:
         self._validator = validator
 
     def __call__(self, *args, **kwargs):
+        response = self.ask(*args, **kwargs)
+        self._reason = response.reason
+        self._errors = response.errors
+        self._completion = response.completion
+        self._history = response.history
+        return response.answer
+
+    def ask(self, *args, **kwargs):
         converted_template = convert_template(self.template)
         variableMap = {}
         self.check_args(args, kwargs, self.variables, variableMap)
         clear_history()
-        result, self._reason, self._errors, self._completion = query(
+        answer, reason, _errors, completion, messages = query(
             converted_template,
             variableMap,
             self.return_type,
             self.training_examples,
             self._validator,
         )
-        self._history = get_history()
-        return result
+        return Response(answer, self.return_type, completion, reason, _errors, messages)
 
     @property
     def reason(self):

@@ -100,7 +100,20 @@ def query(
             }
         )
         data, reason, errors, completion = ask_and_parse(return_type, new_messages)
-    return data, reason, errors, completion
+    return data, reason, errors, completion, messages
+
+
+def improve(answer, answer_type, messages, feedback: str):
+    new_messages = messages.copy()
+    new_messages.append({"role": "assistant", "content": make_answer(answer)})
+    new_messages.append(
+        {
+            "role": "user",
+            "content": f"Improve or correct the answer in JSON again based on the following feedback: {feedback}\nProvide the whole answer. Explain your answer step-by-step in the 'reason' field.",
+        }
+    )
+    answer, reason, errors, completion = ask_and_parse(answer_type, new_messages)
+    return answer, reason, errors, completion, new_messages
 
 
 def chat_raw(return_type, messages):
