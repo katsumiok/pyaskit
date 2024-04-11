@@ -96,6 +96,12 @@ models = [
         "api_name": "OpenAI API",
     },
     {
+        "model_name": "gemini-1.5-pro-latest",
+        "input_token": 1048576,
+        "output_token": 8192,
+        "api_name": "Gemini API",
+    },
+    {
         "model_name": "gemini-1.0-pro",
         "input_token": 30720,
         "output_token": 2048,

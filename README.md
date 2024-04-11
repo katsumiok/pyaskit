@@ -100,6 +100,7 @@ Before using *AskIt*, you need to set your API key as an appropriate environment
 - Gemini API: `GOOGLE_API_KEY`
 - Claude API: `ANTHROPIC_API_KEY`
 - COHERE API: `CO_API_KEY`
+- groq API: `GROQ_API_KEY`
 
 For example, to use OpenAI API, you need to set your OpenAI API key as an environment variable `OPENAI_API_KEY`:
 ```bash
