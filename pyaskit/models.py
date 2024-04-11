@@ -181,4 +181,22 @@ models = [
         "output_tokens": 4096,
         "api_name": "Claude API",
     },
+    {
+        "model_name": "llama2-70b-4096",
+        "input_tokens": 4096,
+        "output_tokens": 4096,
+        "api_name": "groq API",
+    },
+    {
+        "model_name": "mixtral-8x7b-32768",
+        "input_tokens": 32768,
+        "output_tokens": 32768,
+        "api_name": "groq API",
+    },
+    {
+        "model_name": "gemma-7b-it",
+        "input_tokens": 8192,
+        "output_tokens": 8192,
+        "api_name": "groq API",
+    },
 ]
