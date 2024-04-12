@@ -170,6 +170,12 @@ models = [
         "api_name": "Claude API",
     },
     {
+        "model_name": "claude-3-haiku-20240307",
+        "input_tokens": 200000,
+        "output_tokens": 4096,
+        "api_name": "Claude API",
+    },
+    {
         "model_name": "claude-2.1",
         "input_tokens": 200000,
         "output_tokens": 4096,
