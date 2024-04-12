@@ -14,6 +14,7 @@ def extract_information(text: str) -> List[Person]:
     Extract names, job titles, and addresses of people mentioned in the {{text}}.
     """
 
+
 text = """
 John Doe, a software engineer at Tech Innovations Inc., recently moved to 123 Main Street, Anytown, USA. He works closely with his colleague, Jane Smith, the lead data scientist, who resides at 456 Oak Avenue, Somewhere City, Canada. Their manager, Robert Johnson, a senior project manager, is based out of the company's headquarters at 789 Elm Road, Big City, United Kingdom.
 
