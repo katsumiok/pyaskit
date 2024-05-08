@@ -80,7 +80,7 @@ def validate_python_code(code: str, func_name):
             logger.debug(f"An error occurred: {e}")
             return None
     if not hasattr(module, func_name):
-        print(f"Function {func_name} not found")
+        print(f"Function {func_name} not found in {dir(module)}")
         logger.debug(f"Function {func_name} not found")
         return None
     func = getattr(module, func_name)
@@ -91,7 +91,7 @@ def make_messages(skeleton: str):
     return [
         {
             "role": "system",
-            "content": "You are a Python programmer. Your task is to implement the body of the function with the given name and parameters. The function should return the given type.",
+            "content": "You are a Python programmer. Your task is to implement the body of the function with the given name and parameters. Explain your reasoning step-by-step, then provide the function enclosed in a Python code block. Include any necessary imports.",
         },
         #         {
         #             "role": "user",
