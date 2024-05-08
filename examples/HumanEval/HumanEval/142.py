@@ -1,6 +1,5 @@
 from pyaskit import function
 
-
 @function(codable=True)
 def sum_squares(lst):
     """"

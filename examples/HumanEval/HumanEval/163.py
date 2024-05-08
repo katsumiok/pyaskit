@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def generate_integers(a, b):
     """
     Given two positive integers {{a}} and {{b}}, return the even digits between {{a}}
@@ -10,4 +11,3 @@ def generate_integers(a, b):
     generate_integers(8, 2) => [2, 4, 6, 8]
     generate_integers(10, 14) => []
     """
-    @function(codable=True)

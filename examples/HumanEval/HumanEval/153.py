@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def Strongest_Extension(class_name, extensions):
     """You will be given the name of a class (a string) {{class_name}} and a list of extensions {{extensions}}.
     The extensions are to be used to load additional classes to the class. The

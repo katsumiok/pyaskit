@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def iscube(a):
     '''
     Write a function that takes an integer {{a}} and returns True 

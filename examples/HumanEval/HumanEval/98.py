@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def count_upper(s: str) -> int:
-    @function(codable=True)
     """
     Given a string {{s}}, count the number of uppercase vowels in even indices.
     

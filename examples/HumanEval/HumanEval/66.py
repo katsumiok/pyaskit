@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def digitSum(s: str) -> int:
-    @function(codable=True)
     """Task
     Write a function that takes a string {{s}} as input and returns the sum of the upper characters only'
     ASCII codes.

@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def encode(message: str) -> str:
     """
     Write a function that takes a message {{message}}, and encodes in such a 
@@ -14,4 +15,3 @@ def encode(message: str) -> str:
     >>> encode('This is a message')
     'tHKS KS C MGSSCGG'
     """
-@function(codable=True)

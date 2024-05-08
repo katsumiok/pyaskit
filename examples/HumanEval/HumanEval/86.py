@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def anti_shuffle(s: str) -> str:
-    @function(codable=True)
     """
     Write a function that takes a string {{s}} and returns an ordered version of it.
     Ordered version of string, is a string where all words (separated by space)

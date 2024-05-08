@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def reverse_delete(s: str, c: str):
-    @function(codable=True)
     """Task
     We are given two strings {{s}} and {{c}}, you have to delete all the characters in {{s}} that are equal to any character in {{c}}
     then check if the result string is palindrome.

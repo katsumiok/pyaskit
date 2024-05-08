@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def decimal_to_binary(decimal):
     """You will be given a number in decimal form {{decimal}} and your task is to convert it to
     binary format. The function should return a string, with each character representing a binary

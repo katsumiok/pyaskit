@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def sorted_list_sum(lst):
     """Write a function that accepts a list of strings {{lst}} as a parameter,
     deletes the strings that have odd lengths from it,

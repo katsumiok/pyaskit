@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def order_by_points(nums):
     """
     Write a function which sorts the given list of integers {{nums}}

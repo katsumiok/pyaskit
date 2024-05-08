@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def x_or_y(n, x, y):
-    @function(codable=True)
     """A simple program which should return the value of {{x}} if {{n}} is 
     a prime number and should return the value of {{y}} otherwise.
 

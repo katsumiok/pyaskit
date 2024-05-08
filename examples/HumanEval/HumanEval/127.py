@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def intersection(interval1, interval2):
-    @function(codable=True)
     """You are given two intervals {{interval1}} and {{interval2}},
     where each interval is a pair of integers. For example, interval = (start, end) = (1, 2).
     The given intervals are closed which means that the interval (start, end)

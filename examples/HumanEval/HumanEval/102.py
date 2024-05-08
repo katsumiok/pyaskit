@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def choose_num(x, y):
     """This function takes two positive numbers {{x}} and {{y}} and returns the
     biggest even integer number that is in the range [{{x}}, {{y}}] inclusive. If 
@@ -9,4 +10,3 @@ def choose_num(x, y):
     choose_num(12, 15) = 14
     choose_num(13, 12) = -1
     """
-@function(codable=True)

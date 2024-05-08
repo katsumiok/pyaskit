@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def bf(planet1: str, planet2: str):
-    @function(codable=True)
     '''
     There are eight planets in our solar system: the closerst to the Sun 
     is Mercury, the next one is Venus, then Earth, Mars, Jupiter, Saturn, 

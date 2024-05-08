@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def by_length(arr):
     """
     Given an array of integers {{arr}}, sort the integers that are between 1 and 9 inclusive,

@@ -1,9 +1,5 @@
 from pyaskit import function
 
-FIX = """
-Add more test cases.
-"""
-
 @function(codable=True)
 def vowels_count(s):
     """Write a function vowels_count which takes a string {{s}} representing

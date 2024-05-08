@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def greatest_common_divisor(a: int, b: int) -> int:
     """ Return a greatest common divisor of two integers {{a}} and {{b}}
     >>> greatest_common_divisor(3, 5)
@@ -7,4 +8,3 @@ def greatest_common_divisor(a: int, b: int) -> int:
     >>> greatest_common_divisor(25, 15)
     5
     """
-@function(codable=True)

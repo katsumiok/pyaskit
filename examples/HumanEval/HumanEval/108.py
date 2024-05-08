@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def count_nums(arr):
-    @function(codable=True)
     """
     Write a function count_nums which takes an array of integers {{arr}} and returns
     the number of elements which has a sum of digits > 0.

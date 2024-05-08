@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def maximum(arr, k):
-    @function(codable=True)
     """
     Given an array {{arr}} of integers and a positive integer {{k}}, return a sorted list 
     of length {{k}} with the maximum {{k}} numbers in {{arr}}.

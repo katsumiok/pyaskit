@@ -1,8 +1,8 @@
 from pyaskit import function
+import math
 
+@function(codable=True)
 def max_fill(grid, capacity):
-    import math
-    @function(codable=True)
     """
     You are given a rectangular grid {{grid}} of wells. Each row represents a single well,
     and each 1 in a row represents a single unit of water.

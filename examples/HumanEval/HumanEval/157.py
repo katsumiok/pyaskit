@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def right_angle_triangle(a, b, c):
-    '@function(codable=True)'
     '''
     Given the lengths of the three sides {{a}}, {{b}}, and {{c}} of a triangle. Return True if the three
     sides form a right-angled triangle, False otherwise.

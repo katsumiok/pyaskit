@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def solve(s):
-    @function(codable=True)
     """You are given a string {{s}}.
     if s[i] is a letter, reverse its case from lower to upper or vise versa, 
     otherwise keep it as it is.

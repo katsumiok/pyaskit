@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def specialFilter(nums):
     """Write a function that takes an array of numbers {{nums}} as input and returns 
     the number of elements in the array that are greater than 10 and both 

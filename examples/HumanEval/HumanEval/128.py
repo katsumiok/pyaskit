@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def prod_signs(arr):
-    @function(codable=True)
     """
     You are given an array {{arr}} of integers and you need to return
     sum of magnitudes of integers multiplied by product of all signs

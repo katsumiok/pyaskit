@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def double_the_difference(lst):
     '''
     Given a list of numbers {{lst}}, return the sum of squares of the numbers
@@ -12,4 +13,3 @@ def double_the_difference(lst):
    
     If the input list is empty, return 0.
     '''
-    @function(codable=True)

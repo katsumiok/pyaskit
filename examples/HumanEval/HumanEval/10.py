@@ -1,11 +1,6 @@
 from pyaskit import function
 
 @function(codable=True)
-def is_palindrome(string: str) -> bool:
-    """ Test if given {{string}} is a palindrome """
-    return string == string[::-1]
-
-@function(codable=True)
 def make_palindrome(string: str) -> str:
     """ Find the shortest palindrome that begins with a supplied {{string}}.
     Algorithm idea is simple:

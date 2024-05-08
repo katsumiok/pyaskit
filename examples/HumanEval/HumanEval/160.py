@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def do_algebra(operator, operand):
     """
     Given two lists {{operator}}, and {{operand}}. The first list has basic algebra operations, and 
@@ -25,4 +26,3 @@ def do_algebra(operator, operand):
         Operator list has at least one operator, and operand list has at least two operands.
 
     """
-@function(codable=True)

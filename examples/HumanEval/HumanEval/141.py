@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def file_name_check(file_name: str) -> str:
-    @function(codable=True)
     """Create a function which takes a string {{file_name}} representing a file's name, and returns
     'Yes' if the the file's name is valid, and returns 'No' otherwise.
     A file's name is considered to be valid if and only if all the following conditions 

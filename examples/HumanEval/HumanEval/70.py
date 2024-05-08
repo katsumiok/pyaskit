@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def strange_sort_list(lst):
     '''
     Given list of integers {{lst}}, return list in strange order.
@@ -11,4 +12,3 @@ def strange_sort_list(lst):
     strange_sort_list([5, 5, 5, 5]) == [5, 5, 5, 5]
     strange_sort_list([]) == []
     '''
-    @function(codable=True)

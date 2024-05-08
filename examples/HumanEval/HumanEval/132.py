@@ -1,7 +1,7 @@
 from pyaskit import function
 
+@function(codable=True)
 def is_nested(string):
-    '@function(codable=True)'
     '''
     Create a function that takes a string {{string}} as input which contains only square brackets.
     The function should return True if and only if there is a valid subsequence of brackets 

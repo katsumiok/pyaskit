@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def tri(n):
     """Everyone knows Fibonacci sequence, it was studied deeply by mathematicians in 
     the last couple centuries. However, what people don't know is Tribonacci sequence.
@@ -17,4 +18,3 @@ def tri(n):
     Examples:
     tri({{3}}) = [1, 3, 2, 8]
     """
-@function(codable=True)

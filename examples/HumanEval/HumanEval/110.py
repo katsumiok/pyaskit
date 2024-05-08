@@ -1,5 +1,6 @@
 from pyaskit import function
 
+@function(codable=True)
 def exchange(lst1, lst2):
     """In this problem, you will implement a function that takes two lists of numbers {{lst1}} and {{lst2}},
     and determines whether it is possible to perform an exchange of elements
@@ -13,4 +14,3 @@ def exchange(lst1, lst2):
     exchange([1, 2, 3, 4], [1, 5, 3, 4]) => "NO"
     It is assumed that the input lists will be non-empty.
     """
-@function(codable=True)
