@@ -4,8 +4,8 @@ from .models import models
 model_name = config.get_model()
 models_infos = [model for model in models if model["model_name"] == model_name]
 model_info = models_infos[0] if models_infos else None
-if model_info is None:
-    raise ValueError(f"Model {model_name} not found in models")
+#if model_info is None:
+#    raise ValueError(f"Model {model_name} not found in models")
 if model_info and model_info["api_name"] == "Gemini API":
     from .llm_gemini import chat_with_retry
 elif model_info and model_info["api_name"] == "Claude API":
