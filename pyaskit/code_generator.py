@@ -4,7 +4,7 @@ import os
 import importlib
 import tempfile
 import ast
-import pkg_resources
+import importlib.metadata
 from timeout_decorator import timeout, TimeoutError
 from .example import ExampleType
 from .logging_config import setup_logger
@@ -20,11 +20,10 @@ TMP_MOD_NAME, _ = os.path.splitext(os.path.basename(TMP_MOD_PATH))
 
 
 def list_installed_packages():
-    installed_packages = [
-        (d.project_name, d.version) for d in pkg_resources.working_set
-    ]
-    for name, _ in sorted(installed_packages):
-        yield name
+    """Yield the name of each installed package."""
+    installed_distributions = importlib.metadata.distributions()
+    for dist in installed_distributions:
+        yield dist.metadata["Name"]
 
 
 installed_packages = set(list_installed_packages())
