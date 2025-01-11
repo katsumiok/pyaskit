@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pyaskit",
-    version="1.4.3",
+    version="1.4.4",
     packages=find_packages(),
     description="AskIt: Unified programming interface for programming with large language models (GPT-3.5, GPT-4, Gemini, Claude, COHERE, Llama 2)",
     long_description=open("README.md").read(),
@@ -10,13 +10,14 @@ setup(
     author="Katsumi Okuda",
     author_email="okuda@csail.mit.edu",
     url="https://github.com/katsumiok/pyaskit",
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     install_requires=[
         "openai>=1.12.0",
         "unidecode",
         "timeout-decorator",
         "astor",
         "typing_extensions",
+        ""
     ],
     classifiers=[
         "Programming Language :: Python",
