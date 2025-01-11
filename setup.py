@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pyaskit",
-    version="1.4.4",
+    version="1.4.5",
     packages=find_packages(),
     description="AskIt: Unified programming interface for programming with large language models (GPT-3.5, GPT-4, Gemini, Claude, COHERE, Llama 2)",
     long_description=open("README.md").read(),
