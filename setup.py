@@ -17,7 +17,6 @@ setup(
         "timeout-decorator",
         "astor",
         "typing_extensions",
-        ""
     ],
     classifiers=[
         "Programming Language :: Python",
