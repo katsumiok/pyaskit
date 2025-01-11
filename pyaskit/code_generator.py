@@ -90,7 +90,13 @@ def make_messages(skeleton: str):
     return [
         {
             "role": "system",
-            "content": "You are a Python programmer. Your task is to implement the body of the function with the given name and parameters. The function should return the given type.",
+            "content": 
+            "You are a Python programmer.\n"
+            "Your task is to implement the body of the function with the given name and parameters.\n"
+            "The function should return the given type.\n"
+            "Write a complete function definition with necessary imports and packages in a single Python code block.\n"
+            "Explain your CoT reasoning steps before wiring the code.\n"
+            "The answer should contains only one Python code block.",
         },
         #         {
         #             "role": "user",
